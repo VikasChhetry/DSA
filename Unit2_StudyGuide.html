@@ -1,0 +1,1028 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 2 Study Guide — PDA</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Code+Pro:wght@400;600&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+  :root {
+    --bg: #0d1117;
+    --surface: #161b22;
+    --surface2: #21262d;
+    --border: #30363d;
+    --accent: #f78166;
+    --accent2: #79c0ff;
+    --accent3: #56d364;
+    --accent4: #e3b341;
+    --text: #e6edf3;
+    --muted: #8b949e;
+    --hot: #ff7b72;
+    --likely: #ffa657;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    background: linear-gradient(135deg, #0d1117 0%, #1a1f2e 50%, #0d1117 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 40px 24px 32px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(121,192,255,0.08) 0%, transparent 70%);
+  }
+  .hero-tag {
+    display: inline-block;
+    background: rgba(247,129,102,0.15);
+    border: 1px solid rgba(247,129,102,0.4);
+    color: var(--accent);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    border-radius: 20px;
+    margin-bottom: 16px;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(26px, 5vw, 44px);
+    font-weight: 900;
+    line-height: 1.2;
+    margin-bottom: 8px;
+  }
+  .hero h1 span { color: var(--accent2); }
+  .hero p { color: var(--muted); font-size: 14px; max-width: 500px; margin: 0 auto 20px; }
+
+  .stats-row {
+    display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;
+    margin-top: 20px;
+  }
+  .stat-pill {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 6px 16px;
+    font-size: 12px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .stat-pill .dot { width: 8px; height: 8px; border-radius: 50%; }
+  .dot-red { background: var(--hot); box-shadow: 0 0 6px var(--hot); }
+  .dot-orange { background: var(--likely); box-shadow: 0 0 6px var(--likely); }
+  .dot-green { background: var(--accent3); box-shadow: 0 0 6px var(--accent3); }
+
+  /* ── NAV TABS ── */
+  .tab-nav {
+    display: flex; overflow-x: auto; gap: 0;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 16px;
+    scrollbar-width: none;
+  }
+  .tab-nav::-webkit-scrollbar { display: none; }
+  .tab-btn {
+    padding: 14px 18px;
+    font-size: 13px;
+    font-weight: 500;
+    font-family: 'DM Sans', sans-serif;
+    color: var(--muted);
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s;
+  }
+  .tab-btn:hover { color: var(--text); }
+  .tab-btn.active { color: var(--accent2); border-bottom-color: var(--accent2); }
+
+  /* ── MAIN CONTENT ── */
+  .content { max-width: 900px; margin: 0 auto; padding: 24px 16px 60px; }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* ── PREDICTION CARD ── */
+  .predict-grid { display: grid; gap: 12px; }
+  .predict-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px 20px;
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    transition: transform 0.2s, border-color 0.2s;
+  }
+  .predict-card:hover { transform: translateY(-2px); border-color: var(--accent2); }
+  .predict-card.hot { border-left: 3px solid var(--hot); }
+  .predict-card.likely { border-left: 3px solid var(--likely); }
+  .predict-card.medium { border-left: 3px solid var(--accent3); }
+  .badge {
+    flex-shrink: 0;
+    padding: 3px 10px;
+    border-radius: 8px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+  .badge-hot { background: rgba(255,123,114,0.15); color: var(--hot); }
+  .badge-likely { background: rgba(255,166,87,0.15); color: var(--likely); }
+  .badge-medium { background: rgba(86,211,100,0.15); color: var(--accent3); }
+  .card-body { flex: 1; }
+  .card-body h3 { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .card-body p { font-size: 12.5px; color: var(--muted); }
+  .marks-tag {
+    flex-shrink: 0;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 4px 10px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--accent4);
+  }
+
+  /* ── TOPIC SECTIONS ── */
+  .topic-section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    margin-bottom: 16px;
+    overflow: hidden;
+  }
+  .topic-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 20px;
+    cursor: pointer;
+    background: var(--surface);
+    border: none;
+    width: 100%;
+    text-align: left;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    transition: background 0.2s;
+  }
+  .topic-header:hover { background: var(--surface2); }
+  .topic-num {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 700;
+    flex-shrink: 0;
+  }
+  .topic-title { flex: 1; font-size: 14px; font-weight: 600; }
+  .topic-subtitle { font-size: 11.5px; color: var(--muted); margin-top: 1px; }
+  .chevron { color: var(--muted); transition: transform 0.3s; font-size: 16px; }
+  .topic-section.open .chevron { transform: rotate(180deg); }
+  .topic-body {
+    display: none;
+    padding: 0 20px 20px;
+    border-top: 1px solid var(--border);
+  }
+  .topic-section.open .topic-body { display: block; }
+
+  /* ── LESSON CONTENT ── */
+  .lesson-intro {
+    background: var(--surface2);
+    border-left: 3px solid var(--accent2);
+    border-radius: 0 8px 8px 0;
+    padding: 12px 16px;
+    margin: 14px 0 12px;
+    font-size: 13px;
+    color: var(--accent2);
+    font-style: italic;
+  }
+  h4 { font-size: 13px; font-weight: 600; color: var(--accent4); margin: 14px 0 6px; }
+  p { font-size: 13px; color: var(--text); margin-bottom: 8px; line-height: 1.65; }
+  ul { list-style: none; padding: 0; margin-bottom: 10px; }
+  ul li { font-size: 13px; padding: 3px 0 3px 16px; position: relative; color: var(--text); }
+  ul li::before { content: '→'; position: absolute; left: 0; color: var(--accent2); font-size: 11px; top: 4px; }
+
+  .code-block {
+    background: #0d1117;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin: 10px 0;
+    font-family: 'Source Code Pro', monospace;
+    font-size: 12px;
+    overflow-x: auto;
+    line-height: 1.6;
+    color: #e6edf3;
+  }
+  .code-block .cm { color: #8b949e; } /* comment */
+  .code-block .kw { color: #ff7b72; } /* keyword */
+  .code-block .fn { color: #d2a8ff; } /* function */
+  .code-block .st { color: #a5d6ff; } /* string */
+  .code-block .nu { color: #79c0ff; } /* number */
+  .code-block .op { color: #e3b341; } /* operator/output */
+
+  .remember-box {
+    background: rgba(86,211,100,0.07);
+    border: 1px solid rgba(86,211,100,0.25);
+    border-radius: 10px;
+    padding: 12px 16px;
+    margin: 12px 0;
+  }
+  .remember-box strong { color: var(--accent3); font-size: 12px; display: block; margin-bottom: 4px; }
+  .remember-box p { font-size: 12.5px; margin: 0; color: #c8e6c9; }
+
+  .exam-tip {
+    background: rgba(247,129,102,0.08);
+    border: 1px solid rgba(247,129,102,0.3);
+    border-radius: 10px;
+    padding: 12px 16px;
+    margin: 12px 0;
+  }
+  .exam-tip strong { color: var(--accent); font-size: 12px; display: block; margin-bottom: 4px; }
+  .exam-tip p { font-size: 12.5px; margin: 0; color: #ffcdd2; }
+
+  .compare-table {
+    width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 12.5px;
+  }
+  .compare-table th {
+    background: var(--surface2);
+    color: var(--accent2);
+    padding: 8px 12px;
+    text-align: left;
+    font-weight: 600;
+    border: 1px solid var(--border);
+  }
+  .compare-table td {
+    padding: 8px 12px;
+    border: 1px solid var(--border);
+    color: var(--text);
+  }
+  .compare-table tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
+
+  /* ── SECTION HEADERS ── */
+  .section-header {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-header h2 { font-family: 'Playfair Display', serif; font-size: 20px; }
+  .section-badge {
+    background: var(--accent2);
+    color: #000;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 20px;
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-tag">📚 NIET — Programming for Data Analytics</div>
+  <h1>Unit 2: <span>R GUI</span> Complete Study Guide</h1>
+  <p>Everything you need for the 2026 exam — Predictions + Simplified Explanations</p>
+  <div class="stats-row">
+    <div class="stat-pill"><span class="dot dot-red"></span> 🔥 Very Likely (appeared 2+ times)</div>
+    <div class="stat-pill"><span class="dot dot-orange"></span> ⚡ Likely (appeared once)</div>
+    <div class="stat-pill"><span class="dot dot-green"></span> ✅ Good to Know</div>
+  </div>
+</div>
+
+<div class="tab-nav">
+  <button class="tab-btn active" onclick="showTab('predict', this)">🎯 2026 Predictions</button>
+  <button class="tab-btn" onclick="showTab('t1', this)">1. Built-in Functions</button>
+  <button class="tab-btn" onclick="showTab('t2', this)">2. Data Structures</button>
+  <button class="tab-btn" onclick="showTab('t3', this)">3. dplyr Package</button>
+  <button class="tab-btn" onclick="showTab('t4', this)">4. stringr Package</button>
+  <button class="tab-btn" onclick="showTab('t5', this)">5. Import/Export</button>
+  <button class="tab-btn" onclick="showTab('t6', this)">6. Descriptive Stats & EDA</button>
+  <button class="tab-btn" onclick="showTab('t7', this)">7. R Packages</button>
+  <button class="tab-btn" onclick="showTab('t8', this)">8. Flexdashboard & Shiny</button>
+</div>
+
+<div class="content">
+
+<!-- ==================== PREDICTIONS TAB ==================== -->
+<div id="predict" class="tab-panel active">
+  <div class="section-header">
+    <h2>2026 Exam Predictions</h2>
+    <span class="section-badge">CO2</span>
+  </div>
+  <p style="color:var(--muted); font-size:13px; margin-bottom:16px;">Based on analysis of May 2024 & Jan-Jun 2025 PYQs + your teacher's "Expected Questions" slide. Hot = appeared in both years or is in expected list.</p>
+
+  <div class="predict-grid">
+
+    <div class="predict-card hot">
+      <span class="badge badge-hot">🔥 Very Likely</span>
+      <div class="card-body">
+        <h3>Built-in functions in R with examples in data manipulation, statistics & visualization</h3>
+        <p>Asked in 2024 (10 marks). Also in expected questions slide. Very high chance of repetition.</p>
+      </div>
+      <span class="marks-tag">10M</span>
+    </div>
+
+    <div class="predict-card hot">
+      <span class="badge badge-hot">🔥 Very Likely</span>
+      <div class="card-body">
+        <h3>filter(), arrange() and mutate() in dplyr — explain with suitable examples</h3>
+        <p>Directly asked in Jan-Jun 2025 paper. Also in expected questions slide. Must prepare this with code.</p>
+      </div>
+      <span class="marks-tag">10M</span>
+    </div>
+
+    <div class="predict-card hot">
+      <span class="badge badge-hot">🔥 Very Likely</span>
+      <div class="card-body">
+        <h3>Descriptive Statistics — mean, median, mode, variance, SD using R functions</h3>
+        <p>Appeared in 2024 (6 marks). A classic CO2 question. Very likely as 10M in 2026.</p>
+      </div>
+      <span class="marks-tag">6/10M</span>
+    </div>
+
+    <div class="predict-card hot">
+      <span class="badge badge-hot">🔥 Very Likely</span>
+      <div class="card-body">
+        <h3>Create a DataFrame in R using Vectors. Perform rename(), subset(), mutate() operations</h3>
+        <p>Directly listed in teacher's Expected Questions slide. Practical coding question.</p>
+      </div>
+      <span class="marks-tag">10M</span>
+    </div>
+
+    <div class="predict-card hot">
+      <span class="badge badge-hot">🔥 Very Likely</span>
+      <div class="card-body">
+        <h3>Arithmetic operations on vectors v1 & v2 — multiply, cube, convert, seq() sequences</h3>
+        <p>Directly asked in Jan-Jun 2025 (10 marks). High repeat probability.</p>
+      </div>
+      <span class="marks-tag">10M</span>
+    </div>
+
+    <div class="predict-card likely">
+      <span class="badge badge-likely">⚡ Likely</span>
+      <div class="card-body">
+        <h3>What is RShiny? Advantages and structure of a Shiny app</h3>
+        <p>Asked in 2024 (6M). Likely as 6-mark question again in 2026.</p>
+      </div>
+      <span class="marks-tag">6M</span>
+    </div>
+
+    <div class="predict-card likely">
+      <span class="badge badge-likely">⚡ Likely</span>
+      <div class="card-body">
+        <h3>Flexdashboard in R — purpose, layout, interactivity, Shiny integration</h3>
+        <p>Asked in 2024 (10M). May come as 6M or 10M in 2026. Pair with RShiny.</p>
+      </div>
+      <span class="marks-tag">6/10M</span>
+    </div>
+
+    <div class="predict-card likely">
+      <span class="badge badge-likely">⚡ Likely</span>
+      <div class="card-body">
+        <h3>Data Structures in R — explain all 6 with examples</h3>
+        <p>Weekly assignment + expected questions. Likely 6 or 10 marks.</p>
+      </div>
+      <span class="marks-tag">6/10M</span>
+    </div>
+
+    <div class="predict-card likely">
+      <span class="badge badge-likely">⚡ Likely</span>
+      <div class="card-body">
+        <h3>str_split() in string processing — describe with illustration (stringr)</h3>
+        <p>Directly asked in Jan-Jun 2025 (2M). May appear as 6M in 2026 expanded.</p>
+      </div>
+      <span class="marks-tag">2/6M</span>
+    </div>
+
+    <div class="predict-card likely">
+      <span class="badge badge-likely">⚡ Likely</span>
+      <div class="card-body">
+        <h3>geom_col() vs geom_bar() — plotting behavior with one example each</h3>
+        <p>Asked in Jan-Jun 2025 (6M). New question — likely to repeat.</p>
+      </div>
+      <span class="marks-tag">6M</span>
+    </div>
+
+    <div class="predict-card medium">
+      <span class="badge badge-medium">✅ Good to Know</span>
+      <div class="card-body">
+        <h3>mutate() purpose and difference from transmute()</h3>
+        <p>Short 2M question in 2024. May come as part of a bigger dplyr question.</p>
+      </div>
+      <span class="marks-tag">2M</span>
+    </div>
+
+    <div class="predict-card medium">
+      <span class="badge badge-medium">✅ Good to Know</span>
+      <div class="card-body">
+        <h3>Data import and export in R — read.csv(), write.csv(), write.table()</h3>
+        <p>In expected questions slide. Could be 6 marks practical question.</p>
+      </div>
+      <span class="marks-tag">6M</span>
+    </div>
+
+  </div>
+</div>
+
+<!-- ==================== TOPIC 1: BUILT-IN FUNCTIONS ==================== -->
+<div id="t1" class="tab-panel">
+  <div class="section-header"><h2>Built-in Functions in R</h2><span class="section-badge">🔥 Very Likely 10M</span></div>
+
+  <div class="lesson-intro">💡 Think of built-in functions as "ready-made tools" in R — you don't need to build them yourself. Just call them!</div>
+
+  <h4>What are Built-in Functions?</h4>
+  <p>Functions that come pre-installed with R — no package needed. They are divided into categories based on what they do.</p>
+
+  <h4>📐 Category 1: Mathematical Functions</h4>
+  <div class="code-block">
+<span class="fn">abs</span>(-5)         <span class="cm"># 5 — removes negative sign</span>
+<span class="fn">sqrt</span>(16)        <span class="cm"># 4 — square root</span>
+<span class="fn">ceiling</span>(4.2)    <span class="cm"># 5 — round UP always</span>
+<span class="fn">floor</span>(4.9)      <span class="cm"># 4 — round DOWN always</span>
+<span class="fn">round</span>(3.567, 2) <span class="cm"># 3.57 — round to 2 decimal places</span>
+<span class="fn">exp</span>(1)          <span class="cm"># 2.718 — e^1</span>
+<span class="fn">log</span>(100, 10)    <span class="cm"># 2 — log base 10 of 100</span>
+  </div>
+
+  <h4>📊 Category 2: Statistical Functions</h4>
+  <div class="code-block">
+x <span class="op">&lt;-</span> <span class="fn">c</span>(<span class="nu">10</span>, <span class="nu">20</span>, <span class="nu">30</span>, <span class="nu">40</span>, <span class="nu">50</span>)
+
+<span class="fn">mean</span>(x)          <span class="cm"># 30 — average</span>
+<span class="fn">median</span>(x)        <span class="cm"># 30 — middle value</span>
+<span class="fn">sd</span>(x)            <span class="cm"># 15.81 — standard deviation</span>
+<span class="fn">var</span>(x)           <span class="cm"># 250 — variance</span>
+<span class="fn">range</span>(x)         <span class="cm"># 10 50 — min and max</span>
+<span class="fn">sum</span>(x)           <span class="cm"># 150</span>
+<span class="fn">min</span>(x)           <span class="cm"># 10</span>
+<span class="fn">max</span>(x)           <span class="cm"># 50</span>
+<span class="fn">summary</span>(x)       <span class="cm"># Min, Q1, Median, Mean, Q3, Max</span>
+<span class="fn">quantile</span>(x)      <span class="cm"># 0%, 25%, 50%, 75%, 100%</span>
+  </div>
+
+  <h4>🔤 Category 3: Character / String Functions</h4>
+  <div class="code-block">
+<span class="fn">nchar</span>(<span class="st">"Hello"</span>)              <span class="cm"># 5 — count characters</span>
+<span class="fn">toupper</span>(<span class="st">"hello"</span>)            <span class="cm"># "HELLO"</span>
+<span class="fn">tolower</span>(<span class="st">"HELLO"</span>)            <span class="cm"># "hello"</span>
+<span class="fn">paste</span>(<span class="st">"Hello"</span>, <span class="st">"World"</span>)     <span class="cm"># "Hello World"</span>
+<span class="fn">substr</span>(<span class="st">"Hello"</span>, <span class="nu">1</span>, <span class="nu">3</span>)       <span class="cm"># "Hel" — characters 1 to 3</span>
+<span class="fn">grep</span>(<span class="st">"a"</span>, <span class="fn">c</span>(<span class="st">"cat"</span>,<span class="st">"dog"</span>))    <span class="cm"># 1 — position where "a" found</span>
+  </div>
+
+  <h4>🔧 Category 4: Utility / Apply Functions</h4>
+  <div class="code-block">
+<span class="cm"># sapply — apply function to each column, returns vector</span>
+<span class="fn">sapply</span>(mydata, mean, na.rm=<span class="kw">TRUE</span>)  <span class="cm"># Mean of each column</span>
+
+<span class="cm"># apply — for matrices (1=row, 2=column)</span>
+m <span class="op">&lt;-</span> <span class="fn">matrix</span>(<span class="nu">1</span>:<span class="nu">6</span>, nrow=<span class="nu">2</span>)
+<span class="fn">apply</span>(m, <span class="nu">1</span>, sum)   <span class="cm"># Sum of each row</span>
+<span class="fn">apply</span>(m, <span class="nu">2</span>, sum)   <span class="cm"># Sum of each column</span>
+
+<span class="cm"># lapply — returns a list</span>
+<span class="fn">lapply</span>(<span class="fn">c</span>(<span class="nu">1</span>,<span class="nu">4</span>,<span class="nu">9</span>), sqrt)  <span class="cm"># [[1]] 1  [[2]] 2  [[3]] 3</span>
+  </div>
+
+  <h4>📈 Category 5: Visualization Functions (Base R)</h4>
+  <div class="code-block">
+<span class="fn">hist</span>(x)                   <span class="cm"># Histogram</span>
+<span class="fn">plot</span>(x, y)                <span class="cm"># Scatter plot</span>
+<span class="fn">boxplot</span>(x)                <span class="cm"># Box plot — shows quartiles & outliers</span>
+<span class="fn">barplot</span>(<span class="fn">table</span>(x))         <span class="cm"># Bar chart</span>
+<span class="fn">pie</span>(<span class="fn">table</span>(x))             <span class="cm"># Pie chart</span>
+  </div>
+
+  <div class="exam-tip">
+    <strong>⚠️ Exam Tip</strong>
+    <p>For 10 marks: Write at least 2–3 functions per category with working code. Always mention mean(), median(), sd(), summary() and sapply() — they appear most in questions.</p>
+  </div>
+</div>
+
+<!-- ==================== TOPIC 2: DATA STRUCTURES ==================== -->
+<div id="t2" class="tab-panel">
+  <div class="section-header"><h2>Data Structures in R</h2><span class="section-badge">⚡ Likely 6/10M</span></div>
+
+  <div class="lesson-intro">💡 Data structures = different "containers" to store data. Like how you use a box for shoes, a rack for books — R has different containers for different data needs.</div>
+
+  <table class="compare-table">
+    <tr><th>Structure</th><th>Dimensions</th><th>Homogeneous?</th><th>Created by</th></tr>
+    <tr><td><b>Vector</b></td><td>1D</td><td>Yes</td><td>c()</td></tr>
+    <tr><td><b>List</b></td><td>1D</td><td>No (mixed)</td><td>list()</td></tr>
+    <tr><td><b>Matrix</b></td><td>2D</td><td>Yes</td><td>matrix()</td></tr>
+    <tr><td><b>Data Frame</b></td><td>2D</td><td>No (mixed cols)</td><td>data.frame()</td></tr>
+    <tr><td><b>Array</b></td><td>n-D</td><td>Yes</td><td>array()</td></tr>
+    <tr><td><b>Factor</b></td><td>1D</td><td>Categories</td><td>factor()</td></tr>
+  </table>
+
+  <h4>1️⃣ Vector — Most Basic</h4>
+  <p>A 1D collection of same-type elements. Think of it like a single row in Excel.</p>
+  <div class="code-block">
+v1 <span class="op">&lt;-</span> <span class="fn">c</span>(<span class="nu">10</span>, <span class="nu">20</span>, <span class="nu">30</span>)         <span class="cm"># numeric vector</span>
+v2 <span class="op">&lt;-</span> <span class="fn">c</span>(<span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"C"</span>)      <span class="cm"># character vector</span>
+v3 <span class="op">&lt;-</span> <span class="nu">1</span>:<span class="nu">10</span>                   <span class="cm"># sequence 1,2,3,...,10</span>
+v4 <span class="op">&lt;-</span> <span class="fn">seq</span>(<span class="nu">1</span>, <span class="nu">10</span>, by=<span class="nu">2</span>)       <span class="cm"># 1 3 5 7 9</span>
+
+<span class="cm"># Accessing elements</span>
+v1[<span class="nu">2</span>]                        <span class="cm"># 20 — second element</span>
+v1[<span class="fn">c</span>(<span class="kw">TRUE</span>,<span class="kw">FALSE</span>,<span class="kw">TRUE</span>)]        <span class="cm"># 10 30 — logical indexing</span>
+v1[-<span class="nu">1</span>]                       <span class="cm"># 20 30 — exclude first</span>
+  </div>
+
+  <h4>2️⃣ List — Mixed Type Container</h4>
+  <p>Like a bag that can hold anything — numbers, strings, vectors, even other lists!</p>
+  <div class="code-block">
+mylist <span class="op">&lt;-</span> <span class="fn">list</span>(<span class="st">"Alice"</span>, <span class="nu">25</span>, <span class="kw">TRUE</span>, <span class="fn">c</span>(<span class="nu">1</span>,<span class="nu">2</span>,<span class="nu">3</span>))
+mylist[[<span class="nu">1</span>]]   <span class="cm"># "Alice"</span>
+mylist[[<span class="nu">4</span>]]   <span class="cm"># 1 2 3</span>
+  </div>
+
+  <h4>3️⃣ Matrix — 2D Same-Type Table</h4>
+  <div class="code-block">
+m <span class="op">&lt;-</span> <span class="fn">matrix</span>(<span class="nu">1</span>:<span class="nu">6</span>, nrow=<span class="nu">2</span>, ncol=<span class="nu">3</span>)
+<span class="cm">#      [,1] [,2] [,3]</span>
+<span class="cm"># [1,]   1    3    5</span>
+<span class="cm"># [2,]   2    4    6</span>
+m[<span class="nu">1</span>,<span class="nu">2</span>]  <span class="cm"># row 1, col 2 = 3</span>
+  </div>
+
+  <h4>4️⃣ Data Frame — Most Important! (Like a Spreadsheet)</h4>
+  <p>2D table where each column can have a different data type. This is what you use for real datasets!</p>
+  <div class="code-block">
+df <span class="op">&lt;-</span> <span class="fn">data.frame</span>(
+  Name = <span class="fn">c</span>(<span class="st">"Alice"</span>, <span class="st">"Bob"</span>, <span class="st">"Charlie"</span>),
+  Age  = <span class="fn">c</span>(<span class="nu">21</span>, <span class="nu">22</span>, <span class="nu">23</span>),
+  Fee  = <span class="fn">c</span>(<span class="nu">50000</span>, <span class="nu">60000</span>, <span class="nu">55000</span>)
+)
+df$Name         <span class="cm"># Access column by name</span>
+df[<span class="nu">1</span>,]          <span class="cm"># Access first row</span>
+df[df$Age &gt; <span class="nu">21</span>,] <span class="cm"># Filter rows where Age > 21</span>
+  </div>
+
+  <h4>5️⃣ Factor — For Categories</h4>
+  <div class="code-block">
+gender <span class="op">&lt;-</span> <span class="fn">factor</span>(<span class="fn">c</span>(<span class="st">"Male"</span>, <span class="st">"Female"</span>, <span class="st">"Male"</span>))
+<span class="fn">levels</span>(gender)  <span class="cm"># "Female" "Male" — unique categories</span>
+  </div>
+
+  <div class="remember-box">
+    <strong>✅ Remember for Exam</strong>
+    <p>Vector = 1D same type | List = 1D mixed type | Matrix = 2D same type | Data Frame = 2D mixed type | Array = nD same type | Factor = categories</p>
+  </div>
+</div>
+
+<!-- ==================== TOPIC 3: DPLYR ==================== -->
+<div id="t3" class="tab-panel">
+  <div class="section-header"><h2>dplyr Package — Data Manipulation</h2><span class="section-badge">🔥 Very Likely 10M</span></div>
+
+  <div class="lesson-intro">💡 dplyr = a toolkit for working with data frames. It's like Excel but with code. The name means "data frame pliers" — a tool to manipulate data frames.</div>
+
+  <h4>Installation</h4>
+  <div class="code-block">
+<span class="fn">install.packages</span>(<span class="st">"dplyr"</span>)
+<span class="fn">library</span>(<span class="st">"dplyr"</span>)
+  </div>
+
+  <h4>📌 Sample Data (use this in all examples)</h4>
+  <div class="code-block">
+df <span class="op">&lt;-</span> <span class="fn">data.frame</span>(
+  Name   = <span class="fn">c</span>(<span class="st">"Alice"</span>, <span class="st">"Bob"</span>, <span class="st">"Charlie"</span>, <span class="st">"Diana"</span>),
+  Branch = <span class="fn">c</span>(<span class="st">"CSE"</span>, <span class="st">"AIML"</span>, <span class="st">"CSE"</span>, <span class="st">"AIML"</span>),
+  Salary = <span class="fn">c</span>(<span class="nu">30000</span>, <span class="nu">45000</span>, <span class="nu">60000</span>, <span class="nu">35000</span>),
+  Age    = <span class="fn">c</span>(<span class="nu">22</span>, <span class="nu">25</span>, <span class="nu">28</span>, <span class="nu">23</span>)
+)
+  </div>
+
+  <h4>1. filter() — Select Rows by Condition</h4>
+  <p>Like "WHERE" in SQL — keeps only the rows that match your condition.</p>
+  <div class="code-block">
+<span class="fn">filter</span>(df, Salary <span class="op">&gt;</span> <span class="nu">40000</span>)               <span class="cm"># Bob, Charlie</span>
+<span class="fn">filter</span>(df, Branch == <span class="st">"CSE"</span>)                <span class="cm"># Alice, Charlie</span>
+<span class="fn">filter</span>(df, Branch == <span class="st">"CSE"</span> <span class="op">&amp;</span> Age <span class="op">&lt;</span> <span class="nu">25</span>)   <span class="cm"># Alice only</span>
+  </div>
+
+  <h4>2. arrange() — Sort Rows</h4>
+  <p>Like "ORDER BY" in SQL — reorders rows based on a column.</p>
+  <div class="code-block">
+<span class="fn">arrange</span>(df, Salary)          <span class="cm"># Ascending (low to high)</span>
+<span class="fn">arrange</span>(df, <span class="fn">desc</span>(Salary))    <span class="cm"># Descending (high to low)</span>
+<span class="fn">arrange</span>(df, Branch, Age)     <span class="cm"># Sort by Branch, then Age</span>
+  </div>
+
+  <h4>3. select() — Pick Columns</h4>
+  <p>Like "SELECT col1, col2" in SQL — shows only specific columns.</p>
+  <div class="code-block">
+<span class="fn">select</span>(df, Name, Salary)     <span class="cm"># Only Name and Salary columns</span>
+<span class="fn">select</span>(df, -Age)             <span class="cm"># All columns EXCEPT Age</span>
+  </div>
+
+  <h4>4. mutate() — Add New Columns ⭐ Most Asked!</h4>
+  <p>Creates new columns WITHOUT removing old ones. Like adding a formula column in Excel.</p>
+  <div class="code-block">
+<span class="fn">mutate</span>(df, Tax = Salary <span class="op">*</span> <span class="nu">0.1</span>)        <span class="cm"># Adds Tax column</span>
+<span class="fn">mutate</span>(df, Net = Salary - Salary*<span class="nu">0.1</span>)  <span class="cm"># Adds Net salary</span>
+<span class="fn">mutate</span>(df, Bonus = <span class="fn">ifelse</span>(Branch==<span class="st">"CSE"</span>, <span class="nu">5000</span>, <span class="nu">3000</span>))
+  </div>
+
+  <h4>5. transmute() — Add Columns but DROP Old Ones</h4>
+  <div class="code-block">
+<span class="fn">transmute</span>(df, Net = Salary <span class="op">*</span> <span class="nu">0.9</span>)  <span class="cm"># Returns ONLY Net column</span>
+  </div>
+
+  <h4>6. rename() — Rename a Column</h4>
+  <div class="code-block">
+<span class="fn">rename</span>(df, Department = Branch)  <span class="cm"># "Branch" becomes "Department"</span>
+<span class="cm"># Syntax: rename(df, newName = oldName)</span>
+  </div>
+
+  <h4>7. summarize() — Aggregate Data</h4>
+  <div class="code-block">
+<span class="fn">summarize</span>(df, AvgSalary = <span class="fn">mean</span>(Salary), Total = <span class="fn">sum</span>(Salary))
+<span class="cm"># Returns: AvgSalary=42500, Total=170000</span>
+  </div>
+
+  <h4>8. distinct() — Remove Duplicate Rows</h4>
+  <div class="code-block">
+<span class="fn">distinct</span>(df, Branch)              <span class="cm"># Unique branches: CSE, AIML</span>
+<span class="fn">distinct</span>(df, Branch, .keep_all=<span class="kw">TRUE</span>)  <span class="cm"># Keep all cols</span>
+  </div>
+
+  <div class="exam-tip">
+    <strong>⚠️ Exam Tip — DataFrame Question</strong>
+    <p>If asked to create a Student DataFrame and apply operations: create it with data.frame(), then use filter() for conditions, rename() for renaming, mutate() to add columns. Write ALL the code step by step.</p>
+  </div>
+
+  <div class="code-block">
+<span class="cm"># EXPECTED QUESTION SOLUTION — Student DataFrame</span>
+student <span class="op">&lt;-</span> <span class="fn">data.frame</span>(
+  RollNo = <span class="fn">c</span>(<span class="nu">101</span>, <span class="nu">102</span>, <span class="nu">103</span>),
+  Name   = <span class="fn">c</span>(<span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"C"</span>),
+  Age    = <span class="fn">c</span>(<span class="nu">20</span>, <span class="nu">21</span>, <span class="nu">22</span>),
+  Course = <span class="fn">c</span>(<span class="st">"AIML"</span>, <span class="st">"CSE"</span>, <span class="st">"AIML"</span>),
+  Fee    = <span class="fn">c</span>(<span class="nu">55000</span>, <span class="nu">45000</span>, <span class="nu">60000</span>)
+)
+
+<span class="cm"># a) Rename Course to Branch</span>
+student <span class="op">&lt;-</span> <span class="fn">rename</span>(student, Branch = Course)
+
+<span class="cm"># b) Students paying > 50K in AIML</span>
+<span class="fn">filter</span>(student, Fee <span class="op">&gt;</span> <span class="nu">50000</span> <span class="op">&amp;</span> Branch == <span class="st">"AIML"</span>)
+
+<span class="cm"># c) Add Hostel_Charge = 20% of Fee</span>
+student <span class="op">&lt;-</span> <span class="fn">mutate</span>(student, Hostel_Charge = Fee <span class="op">*</span> <span class="nu">0.20</span>)
+  </div>
+</div>
+
+<!-- ==================== TOPIC 4: STRINGR ==================== -->
+<div id="t4" class="tab-panel">
+  <div class="section-header"><h2>String Manipulation — stringr Package</h2><span class="section-badge">⚡ Likely 6M</span></div>
+
+  <div class="lesson-intro">💡 stringr = a package for working with text/strings in R. Think of it as "find, replace, split" operations on words and sentences.</div>
+
+  <h4>Installation</h4>
+  <div class="code-block">
+<span class="fn">install.packages</span>(<span class="st">"stringr"</span>)
+<span class="fn">library</span>(<span class="st">"stringr"</span>)
+  </div>
+
+  <h4>Key Functions</h4>
+  <div class="code-block">
+s <span class="op">&lt;-</span> <span class="st">"Hello World Data Analytics"</span>
+
+<span class="fn">str_length</span>(s)             <span class="cm"># 26 — count characters</span>
+<span class="fn">str_upper</span>(s)              <span class="cm"># "HELLO WORLD DATA ANALYTICS"</span>
+<span class="fn">str_lower</span>(s)              <span class="cm"># "hello world data analytics"</span>
+<span class="fn">str_sub</span>(s, <span class="nu">1</span>, <span class="nu">5</span>)          <span class="cm"># "Hello" — substring</span>
+<span class="fn">str_replace</span>(s, <span class="st">"World"</span>, <span class="st">"R"</span>)  <span class="cm"># "Hello R Data Analytics"</span>
+<span class="fn">str_detect</span>(s, <span class="st">"Data"</span>)     <span class="cm"># TRUE — is "Data" in string?</span>
+<span class="fn">str_count</span>(s, <span class="st">"a"</span>)         <span class="cm"># 4 — count occurrences of "a"</span>
+  </div>
+
+  <h4>str_split() — Split a String ⭐ Most Asked!</h4>
+  <p>Splits a string into pieces based on a separator character (like splitting a sentence into words).</p>
+  <div class="code-block">
+<span class="cm"># Split by space</span>
+<span class="fn">str_split</span>(<span class="st">"Hello World R"</span>, <span class="st">" "</span>)
+<span class="cm"># Output: [["Hello" "World" "R"]]</span>
+
+<span class="cm"># Split by comma</span>
+<span class="fn">str_split</span>(<span class="st">"Alice,Bob,Charlie"</span>, <span class="st">","</span>)
+<span class="cm"># Output: [["Alice" "Bob" "Charlie"]]</span>
+
+<span class="cm"># Split a vector of strings</span>
+names <span class="op">&lt;-</span> <span class="fn">c</span>(<span class="st">"Alice Smith"</span>, <span class="st">"Bob Jones"</span>)
+<span class="fn">str_split</span>(names, <span class="st">" "</span>)
+<span class="cm"># Output: [[1]] "Alice" "Smith"  [[2]] "Bob" "Jones"</span>
+  </div>
+
+  <h4>Base R String Functions (also important)</h4>
+  <div class="code-block">
+<span class="fn">nchar</span>(<span class="st">"Hello"</span>)            <span class="cm"># 5 — character count</span>
+<span class="fn">paste</span>(<span class="st">"A"</span>, <span class="st">"B"</span>, sep=<span class="st">"-"</span>)   <span class="cm"># "A-B"</span>
+<span class="fn">strsplit</span>(<span class="st">"a,b,c"</span>, <span class="st">","</span>)     <span class="cm"># list: "a" "b" "c"</span>
+<span class="fn">grep</span>(<span class="st">"cat"</span>, <span class="fn">c</span>(<span class="st">"cat"</span>,<span class="st">"dog"</span>,<span class="st">"catfish"</span>))  <span class="cm"># 1 3</span>
+<span class="fn">sub</span>(<span class="st">"o"</span>, <span class="st">"0"</span>, <span class="st">"Hello World"</span>)  <span class="cm"># "Hell0 World" (1st occurrence)</span>
+<span class="fn">gsub</span>(<span class="st">"o"</span>, <span class="st">"0"</span>, <span class="st">"Hello World"</span>) <span class="cm"># "Hell0 W0rld" (all occurrences)</span>
+  </div>
+
+  <div class="remember-box">
+    <strong>✅ Key Difference to Remember</strong>
+    <p>sub() replaces FIRST match only. gsub() replaces ALL matches. str_split() = split by separator. str_detect() = check if pattern exists (TRUE/FALSE).</p>
+  </div>
+</div>
+
+<!-- ==================== TOPIC 5: IMPORT/EXPORT ==================== -->
+<div id="t5" class="tab-panel">
+  <div class="section-header"><h2>Data Import & Export in R</h2><span class="section-badge">✅ Good to Know 6M</span></div>
+
+  <div class="lesson-intro">💡 Import = bringing data INTO R. Export = saving R data to a file. Most commonly used with CSV files.</div>
+
+  <h4>📥 Importing Data</h4>
+  <div class="code-block">
+<span class="cm"># Read CSV file</span>
+df <span class="op">&lt;-</span> <span class="fn">read.csv</span>(<span class="st">"data.csv"</span>)
+df <span class="op">&lt;-</span> <span class="fn">read.csv</span>(<span class="st">"data.csv"</span>, header=<span class="kw">TRUE</span>, sep=<span class="st">","</span>)
+
+<span class="cm"># Read text file (tab-separated)</span>
+df <span class="op">&lt;-</span> <span class="fn">read.table</span>(<span class="st">"data.txt"</span>, header=<span class="kw">TRUE</span>, sep=<span class="st">"\t"</span>)
+
+<span class="cm"># Read Excel file (needs readxl package)</span>
+<span class="fn">library</span>(readxl)
+df <span class="op">&lt;-</span> <span class="fn">read_excel</span>(<span class="st">"data.xlsx"</span>)
+  </div>
+
+  <h4>📤 Exporting Data</h4>
+  <div class="code-block">
+<span class="cm"># Write to CSV</span>
+<span class="fn">write.csv</span>(df, <span class="st">"output.csv"</span>, row.names=<span class="kw">FALSE</span>)
+
+<span class="cm"># write.table — more flexible</span>
+<span class="fn">write.table</span>(df, file=<span class="st">"output.txt"</span>, sep=<span class="st">"\t"</span>,
+            row.names=<span class="kw">TRUE</span>, col.names=<span class="kw">TRUE</span>)
+
+<span class="cm"># write_tsv — tab-separated (needs readr package)</span>
+<span class="fn">library</span>(readr)
+<span class="fn">write_tsv</span>(df, <span class="st">"output.tsv"</span>)
+  </div>
+
+  <h4>Important Parameters to Know</h4>
+  <table class="compare-table">
+    <tr><th>Parameter</th><th>Meaning</th><th>Default</th></tr>
+    <tr><td>header</td><td>First row is column names?</td><td>TRUE</td></tr>
+    <tr><td>sep</td><td>Separator character</td><td>"," for csv</td></tr>
+    <tr><td>row.names</td><td>Include row numbers?</td><td>TRUE</td></tr>
+    <tr><td>col.names</td><td>Include column headers?</td><td>TRUE</td></tr>
+    <tr><td>na.rm</td><td>Remove missing values?</td><td>FALSE</td></tr>
+  </table>
+</div>
+
+<!-- ==================== TOPIC 6: DESCRIPTIVE STATS & EDA ==================== -->
+<div id="t6" class="tab-panel">
+  <div class="section-header"><h2>Descriptive Statistics & EDA in R</h2><span class="section-badge">🔥 Very Likely 10M</span></div>
+
+  <div class="lesson-intro">💡 Descriptive Statistics = summarizing data with numbers (mean, median, etc.). EDA = exploring data visually to understand patterns before building models.</div>
+
+  <h4>📊 The 5 Main Measures</h4>
+
+  <div class="code-block">
+x <span class="op">&lt;-</span> <span class="fn">c</span>(<span class="nu">10</span>, <span class="nu">20</span>, <span class="nu">20</span>, <span class="nu">30</span>, <span class="nu">40</span>, <span class="nu">50</span>, <span class="nu">100</span>)
+
+<span class="cm"># 1. MEAN — Sum / Count = average</span>
+<span class="fn">mean</span>(x)                     <span class="cm"># 38.57</span>
+<span class="fn">mean</span>(x, trim=<span class="nu">0.1</span>, na.rm=<span class="kw">TRUE</span>)  <span class="cm"># trimmed mean (ignores extremes)</span>
+
+<span class="cm"># 2. MEDIAN — middle value (not affected by outliers)</span>
+<span class="fn">median</span>(x)                   <span class="cm"># 30 (sorted: 10,20,20,30,40,50,100)</span>
+
+<span class="cm"># 3. MODE — most frequent (R has no direct function)</span>
+mode_val <span class="op">&lt;-</span> <span class="fn">names</span>(<span class="fn">sort</span>(<span class="fn">table</span>(x), decreasing=<span class="kw">TRUE</span>))[<span class="nu">1</span>]
+<span class="cm"># mode_val = "20"</span>
+
+<span class="cm"># 4. VARIANCE — how spread out data is</span>
+<span class="fn">var</span>(x)                      <span class="cm"># 977.62</span>
+
+<span class="cm"># 5. STANDARD DEVIATION — sqrt of variance (same unit as data)</span>
+<span class="fn">sd</span>(x)                       <span class="cm"># 31.27</span>
+
+<span class="cm"># ALL AT ONCE</span>
+<span class="fn">summary</span>(x)                  <span class="cm"># Min, Q1, Median, Mean, Q3, Max</span>
+<span class="fn">fivenum</span>(x)                  <span class="cm"># Tukey 5-number summary</span>
+<span class="fn">quantile</span>(x, <span class="fn">c</span>(<span class="nu">0.25</span>, <span class="nu">0.75</span>))  <span class="cm"># Q1 and Q3</span>
+  </div>
+
+  <div class="remember-box">
+    <strong>✅ When to use Mean vs Median?</strong>
+    <p>Use MEAN when data has no outliers (symmetric). Use MEDIAN when there are extreme values (skewed). In the example above, 100 is an outlier — median (30) is more representative than mean (38.57).</p>
+  </div>
+
+  <h4>🔍 EDA — Exploratory Data Analysis</h4>
+  <p>EDA is the process of exploring data <b>before</b> building any model. It helps you understand what's in the data.</p>
+
+  <h4>Steps of EDA:</h4>
+  <ul>
+    <li><b>Step 1: Load & Inspect</b> — head(), tail(), str(), dim(), names()</li>
+    <li><b>Step 2: Summary Statistics</b> — summary(), mean(), sd()</li>
+    <li><b>Step 3: Check Missing Values</b> — is.na(), sum(is.na(df))</li>
+    <li><b>Step 4: Visualize Distributions</b> — hist(), boxplot()</li>
+    <li><b>Step 5: Find Correlations</b> — cor(), pairs()</li>
+    <li><b>Step 6: Identify Outliers</b> — boxplot shows outliers as dots</li>
+  </ul>
+
+  <div class="code-block">
+<span class="cm"># EDA Example with mtcars dataset</span>
+<span class="fn">head</span>(mtcars)               <span class="cm"># First 6 rows</span>
+<span class="fn">str</span>(mtcars)                <span class="cm"># Structure: types of each column</span>
+<span class="fn">dim</span>(mtcars)                <span class="cm"># 32 rows, 11 columns</span>
+<span class="fn">sum</span>(<span class="fn">is.na</span>(mtcars))         <span class="cm"># Count missing values (should be 0)</span>
+<span class="fn">summary</span>(mtcars)            <span class="cm"># Statistics for all columns</span>
+<span class="fn">cor</span>(mtcars)                <span class="cm"># Correlation matrix</span>
+<span class="fn">hist</span>(mtcars<span class="op">$</span>mpg)           <span class="cm"># Distribution of mpg</span>
+<span class="fn">boxplot</span>(mpg <span class="op">~</span> cyl, data=mtcars)  <span class="cm"># mpg grouped by cylinders</span>
+  </div>
+</div>
+
+<!-- ==================== TOPIC 7: R PACKAGES ==================== -->
+<div id="t7" class="tab-panel">
+  <div class="section-header"><h2>Building & Running R Packages</h2><span class="section-badge">✅ Know Basics</span></div>
+
+  <div class="lesson-intro">💡 An R package is like an app — a collection of R functions, data, and documentation bundled together. Examples: dplyr, ggplot2, shiny are all packages.</div>
+
+  <h4>How to Install & Use a Package</h4>
+  <div class="code-block">
+<span class="fn">install.packages</span>(<span class="st">"dplyr"</span>)   <span class="cm"># Install from CRAN (internet needed)</span>
+<span class="fn">library</span>(<span class="st">"dplyr"</span>)            <span class="cm"># Load into current session</span>
+<span class="fn">require</span>(<span class="st">"dplyr"</span>)            <span class="cm"># Same as library but returns TRUE/FALSE</span>
+<span class="fn">installed.packages</span>()        <span class="cm"># List all installed packages</span>
+  </div>
+
+  <h4>Structure of a Package (DESCRIPTION file)</h4>
+  <p>Every R package must have a DESCRIPTION file containing:</p>
+  <ul>
+    <li><b>Package:</b> Name of the package</li>
+    <li><b>Version:</b> Version number (e.g., 1.0.0)</li>
+    <li><b>Author:</b> Who made it</li>
+    <li><b>Depends:</b> Other packages it needs</li>
+    <li><b>License:</b> How it can be used</li>
+  </ul>
+
+  <h4>NAMESPACE File</h4>
+  <p>Controls what functions are visible to users (exported) and what external functions are used (imported).</p>
+  <div class="code-block">
+<span class="cm"># In NAMESPACE file:</span>
+export(myFunction)          <span class="cm"># Make myFunction available to users</span>
+import(dplyr)               <span class="cm"># Import entire dplyr package</span>
+importFrom(dplyr, filter)   <span class="cm"># Import only filter() from dplyr</span>
+  </div>
+
+  <h4>Namespace Notation — Avoid Conflicts</h4>
+  <div class="code-block">
+<span class="cm"># When two packages have same function name:</span>
+dplyr::filter(df, Age <span class="op">&gt;</span> <span class="nu">20</span>)   <span class="cm"># Use dplyr's filter</span>
+stats::filter(x, filter)       <span class="cm"># Use stats' filter</span>
+<span class="cm"># :: means "from this package"</span>
+  </div>
+
+  <h4>Create a Package in RStudio</h4>
+  <p>File → New Project → New Directory → R Package</p>
+  <p>Uses the <b>devtools</b> package (by Hadley Wickham) which provides: load_all(), document(), test(), check(), build(), install()</p>
+</div>
+
+<!-- ==================== TOPIC 8: FLEXDASHBOARD & SHINY ==================== -->
+<div id="t8" class="tab-panel">
+  <div class="section-header"><h2>Flexdashboard & R Shiny</h2><span class="section-badge">⚡ Likely 6/10M</span></div>
+
+  <div class="lesson-intro">💡 Think of Flexdashboard as a "report template" and Shiny as the "engine that makes it interactive". Together they let you build live web dashboards using only R!</div>
+
+  <h4>🎛️ What is Flexdashboard?</h4>
+  <p>An R Markdown format that creates dashboard-style HTML pages. Can be static (just charts) or dynamic (with Shiny for interactivity).</p>
+
+  <h4>Basic Setup (YAML Header)</h4>
+  <div class="code-block">
+<span class="cm">---</span>
+<span class="st">title: "My Sales Dashboard"</span>
+<span class="st">output: flexdashboard::flex_dashboard</span>
+<span class="st">  orientation: columns</span>
+<span class="st">  vertical_layout: fill</span>
+<span class="cm">---</span>
+  </div>
+
+  <h4>Layout Structure</h4>
+  <div class="code-block">
+<span class="cm"># PAGE (use ===)</span>
+Page 1
+===================================
+
+<span class="cm"># COLUMN (use ---)</span>
+Column 1
+-----------------------------------
+
+<span class="cm"># PANEL (use ###)</span>
+### My Chart
+
+```{r}
+hist(mtcars$mpg)
+```
+  </div>
+
+  <h4>Special Components</h4>
+  <table class="compare-table">
+    <tr><th>Component</th><th>What it does</th><th>Code</th></tr>
+    <tr><td>valueBox()</td><td>Display a KPI number with color/icon</td><td>valueBox(42, "Total Sales", icon="fa-cart")</td></tr>
+    <tr><td>gauge()</td><td>Speedometer chart</td><td>gauge(75, min=0, max=100)</td></tr>
+    <tr><td>datatable()</td><td>Interactive searchable table</td><td>DT::datatable(df)</td></tr>
+    <tr><td>ggplotly()</td><td>Interactive ggplot2 chart</td><td>plotly::ggplotly(p)</td></tr>
+  </table>
+
+  <h4>🌐 What is R Shiny?</h4>
+  <p>A framework to build interactive web apps in pure R. You define the <b>UI</b> (what user sees) and <b>Server</b> (what happens when they interact).</p>
+
+  <h4>Basic Shiny App Structure</h4>
+  <div class="code-block">
+<span class="fn">library</span>(shiny)
+
+<span class="cm"># Part 1: UI — what the user sees</span>
+ui <span class="op">&lt;-</span> <span class="fn">fluidPage</span>(
+  <span class="fn">titlePanel</span>(<span class="st">"My Shiny App"</span>),
+  <span class="fn">sidebarLayout</span>(
+    <span class="fn">sidebarPanel</span>(
+      <span class="fn">sliderInput</span>(<span class="st">"bins"</span>, <span class="st">"Number of bins:"</span>, min=<span class="nu">1</span>, max=<span class="nu">50</span>, value=<span class="nu">30</span>)
+    ),
+    <span class="fn">mainPanel</span>(
+      <span class="fn">plotOutput</span>(<span class="st">"distPlot"</span>)
+    )
+  )
+)
+
+<span class="cm"># Part 2: Server — what happens</span>
+server <span class="op">&lt;-</span> <span class="kw">function</span>(input, output) {
+  output<span class="op">$</span>distPlot <span class="op">&lt;-</span> <span class="fn">renderPlot</span>({
+    x <span class="op">&lt;-</span> faithful[, <span class="nu">2</span>]
+    <span class="fn">hist</span>(x, breaks = input<span class="op">$</span>bins, col = <span class="st">"blue"</span>)
+  })
+}
+
+<span class="cm"># Part 3: Launch</span>
+<span class="fn">shinyApp</span>(ui = ui, server = server)
+  </div>
+
+  <h4>Advantages of RShiny</h4>
+  <ul>
+    <li>No HTML/CSS/JavaScript knowledge needed</li>
+    <li>Real-time interactive charts and filters</li>
+    <li>Easy deployment to shinyapps.io</li>
+    <li>Integrates with ggplot2, plotly, DT</li>
+    <li>Runs in any web browser</li>
+  </ul>
+
+  <h4>Flexdashboard + Shiny Combined</h4>
+  <div class="code-block">
+<span class="cm">---</span>
+<span class="st">title: "Interactive Dashboard"</span>
+<span class="st">output: flexdashboard::flex_dashboard</span>
+<span class="st">runtime: shiny</span>    <span class="cm"># This line makes it interactive!</span>
+<span class="cm">---</span>
+
+```{r}
+<span class="cm"># Now you can use input$, output$, renderPlot() etc.</span>
+<span class="fn">sliderInput</span>(<span class="st">"n"</span>, <span class="st">"Sample size:"</span>, <span class="nu">10</span>, <span class="nu">100</span>, <span class="nu">50</span>)
+<span class="fn">renderPlot</span>({ <span class="fn">hist</span>(<span class="fn">rnorm</span>(input<span class="op">$</span>n)) })
+```
+  </div>
+
+  <div class="exam-tip">
+    <strong>⚠️ Key Point for Exam</strong>
+    <p>Flexdashboard alone = static HTML file. Add "runtime: shiny" in YAML = dynamic/interactive. Flexdashboard handles layout; Shiny handles reactivity. Know valueBox(), gauge(), and the basic ui + server structure.</p>
+  </div>
+</div>
+
+</div><!-- /content -->
+
+<script>
+function showTab(id, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+function toggleTopic(el) {
+  el.closest('.topic-section').classList.toggle('open');
+}
+</script>
+</body>
+</html>

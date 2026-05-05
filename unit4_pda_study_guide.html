@@ -1,0 +1,604 @@
+
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--font-sans); }
+.container { padding: 1rem 0; }
+.nav { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 1.5rem; }
+.nav-btn { padding: 6px 14px; border: 0.5px solid var(--color-border-secondary); border-radius: var(--border-radius-md); background: var(--color-background-primary); color: var(--color-text-secondary); font-size: 13px; cursor: pointer; transition: all 0.15s; }
+.nav-btn.active { background: #EEEDFE; border-color: #7F77DD; color: #3C3489; font-weight: 500; }
+.section { display: none; }
+.section.active { display: block; }
+.topic-card { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 1rem 1.25rem; margin-bottom: 1rem; }
+.topic-title { font-size: 15px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 8px; }
+.topic-body { font-size: 14px; color: var(--color-text-secondary); line-height: 1.7; }
+.badge { display: inline-block; font-size: 11px; padding: 2px 8px; border-radius: var(--border-radius-md); margin-right: 4px; margin-bottom: 6px; font-weight: 500; }
+.badge-purple { background: #EEEDFE; color: #3C3489; }
+.badge-teal { background: #E1F5EE; color: #085041; }
+.badge-amber { background: #FAEEDA; color: #633806; }
+.badge-coral { background: #FAECE7; color: #712B13; }
+.badge-blue { background: #E6F1FB; color: #0C447C; }
+.badge-green { background: #EAF3DE; color: #27500A; }
+.highlight { background: #FAEEDA; color: #633806; padding: 2px 6px; border-radius: 4px; font-size: 13px; font-family: var(--font-mono); }
+.point { display: flex; gap: 8px; margin-bottom: 6px; font-size: 14px; color: var(--color-text-secondary); }
+.point::before { content: "→"; color: #7F77DD; flex-shrink: 0; font-weight: 500; }
+.exam-box { background: #EAF3DE; border: 0.5px solid #C0DD97; border-radius: var(--border-radius-md); padding: 12px 16px; margin-top: 10px; }
+.exam-label { font-size: 11px; font-weight: 500; color: #27500A; margin-bottom: 4px; }
+.exam-text { font-size: 13px; color: #3B6D11; }
+.code-box { background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 10px 14px; margin-top: 8px; font-family: var(--font-mono); font-size: 12px; color: var(--color-text-primary); line-height: 1.6; white-space: pre-wrap; }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.compare-card { background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 10px 12px; }
+.compare-title { font-size: 13px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 6px; }
+.mini-point { font-size: 12px; color: var(--color-text-secondary); margin-bottom: 4px; display: flex; gap: 6px; }
+.mini-point::before { content: "•"; color: #7F77DD; }
+h2 { font-size: 18px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 1rem; }
+.section-intro { font-size: 14px; color: var(--color-text-secondary); margin-bottom: 1rem; line-height: 1.6; }
+.ask-btn { margin-top: 10px; padding: 6px 14px; border: 0.5px solid var(--color-border-secondary); border-radius: var(--border-radius-md); background: var(--color-background-primary); color: var(--color-text-secondary); font-size: 12px; cursor: pointer; }
+.ask-btn:hover { background: var(--color-background-secondary); }
+table.notes-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 8px; }
+table.notes-table th { background: var(--color-background-secondary); padding: 6px 10px; text-align: left; font-weight: 500; color: var(--color-text-primary); border-bottom: 0.5px solid var(--color-border-tertiary); }
+table.notes-table td { padding: 6px 10px; color: var(--color-text-secondary); border-bottom: 0.5px solid var(--color-border-tertiary); vertical-align: top; }
+</style>
+
+<div class="container">
+<h2 style="margin-bottom:4px;">Unit 4 — TensorFlow & AI</h2>
+<p style="font-size:13px;color:var(--color-text-secondary);margin-bottom:1rem;">Subject Code: ACSAI0617 | Click any topic below to study it</p>
+
+<div class="nav">
+  <button class="nav-btn active" onclick="show('ai')">1. AI Basics</button>
+  <button class="nav-btn" onclick="show('tf')">2. TensorFlow</button>
+  <button class="nav-btn" onclick="show('cnn')">3. CNN</button>
+  <button class="nav-btn" onclick="show('text')">4. Text & Sequences</button>
+  <button class="nav-btn" onclick="show('rnn')">5. RNN / LSTM / GRU</button>
+  <button class="nav-btn" onclick="show('tensorboard')">6. TensorBoard</button>
+  <button class="nav-btn" onclick="show('word2vec')">7. Word Vectors</button>
+  <button class="nav-btn" onclick="show('advanced')">8. Advanced Topics</button>
+  <button class="nav-btn" onclick="show('qa')">Quick Revision</button>
+</div>
+
+<!-- SECTION 1: AI -->
+<div id="s-ai" class="section active">
+  <h2>Artificial Intelligence (AI)</h2>
+  <p class="section-intro">AI = ability of a machine to think, learn, and make decisions like humans.</p>
+
+  <div class="topic-card">
+    <div class="topic-title">Types of AI — Based on Capabilities</div>
+    <div class="topic-body">
+      <span class="badge badge-purple">Narrow AI (Weak)</span><span class="badge badge-blue">General AI (Strong)</span><span class="badge badge-coral">Super AI</span>
+      <div class="grid2" style="margin-top:8px;">
+        <div class="compare-card">
+          <div class="compare-title">Narrow AI</div>
+          <div class="mini-point">Performs ONE specific task</div>
+          <div class="mini-point">Cannot go beyond programming</div>
+          <div class="mini-point">Examples: Siri, Alexa, Netflix recommendations</div>
+        </div>
+        <div class="compare-card">
+          <div class="compare-title">General AI</div>
+          <div class="mini-point">Can do ANY intellectual task like humans</div>
+          <div class="mini-point">Not yet fully developed</div>
+          <div class="mini-point">Can learn, think, decide independently</div>
+        </div>
+        <div class="compare-card">
+          <div class="compare-title">Super AI</div>
+          <div class="mini-point">More intelligent than humans in ALL aspects</div>
+          <div class="mini-point">Self-aware, highly advanced</div>
+          <div class="mini-point">Only in movies (e.g., Ultron from Avengers)</div>
+        </div>
+      </div>
+    </div>
+    <div class="exam-box"><div class="exam-label">Exam Tip</div><div class="exam-text">Remember: Narrow → one task | General → all tasks | Super → beyond humans</div></div>
+  </div>
+
+  <div class="topic-card">
+    <div class="topic-title">Types of AI — Based on Functionality</div>
+    <div class="topic-body">
+      <table class="notes-table">
+        <tr><th>Type</th><th>Memory</th><th>Example</th></tr>
+        <tr><td>Reactive Machines</td><td>No memory at all</td><td>IBM Deep Blue (Chess)</td></tr>
+        <tr><td>Limited Memory</td><td>Remembers recent past</td><td>Self-driving cars, YouTube</td></tr>
+        <tr><td>Theory of Mind</td><td>Understands emotions</td><td>Under development</td></tr>
+        <tr><td>Self-Aware AI</td><td>Fully conscious</td><td>Does not exist yet</td></tr>
+      </table>
+    </div>
+    <div class="exam-box"><div class="exam-label">Memory Trick</div><div class="exam-text">R-L-T-S → "Really Large Tiger Sleeps" → Reactive, Limited, Theory, Self-Aware</div></div>
+  </div>
+
+  <div class="topic-card">
+    <div class="topic-title">Advantages & Disadvantages of AI</div>
+    <div class="grid2">
+      <div class="compare-card">
+        <div class="compare-title" style="color:#27500A">Advantages ✓</div>
+        <div class="mini-point">Reduces human effort</div>
+        <div class="mini-point">High accuracy</div>
+        <div class="mini-point">24/7 availability</div>
+        <div class="mini-point">Faster decisions</div>
+        <div class="mini-point">Works in dangerous environments</div>
+        <div class="mini-point">Personalized experience</div>
+      </div>
+      <div class="compare-card">
+        <div class="compare-title" style="color:#712B13">Disadvantages ✗</div>
+        <div class="mini-point">Job loss</div>
+        <div class="mini-point">High cost</div>
+        <div class="mini-point">Lack of creativity</div>
+        <div class="mini-point">Machine dependence</div>
+        <div class="mini-point">No emotions or ethics</div>
+        <div class="mini-point">Data privacy issues</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 2: TensorFlow -->
+<div id="s-tf" class="section">
+  <h2>TensorFlow Basics</h2>
+  <p class="section-intro">TensorFlow = open-source ML library by Google for building AI/ML/DL models.</p>
+
+  <div class="topic-card">
+    <div class="topic-title">What is a Tensor?</div>
+    <div class="topic-body">
+      <p style="margin-bottom:8px;">A tensor is an n-dimensional array (like a container for numbers).</p>
+      <table class="notes-table">
+        <tr><th>Type</th><th>Example</th><th>Think of it as</th></tr>
+        <tr><td>Scalar</td><td>5</td><td>Single number</td></tr>
+        <tr><td>Vector</td><td>[1, 2, 3]</td><td>1D list</td></tr>
+        <tr><td>Matrix</td><td>[[1,2],[3,4]]</td><td>2D table</td></tr>
+        <tr><td>Tensor</td><td>Multi-dimensional</td><td>3D+ cube of numbers</td></tr>
+      </table>
+      <p style="margin-top:8px; font-size:13px;">Every tensor has: <span class="highlight">Value</span> + <span class="highlight">Shape</span> + <span class="highlight">Data type</span></p>
+    </div>
+  </div>
+
+  <div class="topic-card">
+    <div class="topic-title">Key TensorFlow Operations</div>
+    <div class="topic-body">
+      <div class="code-box">import tensorflow as tf
+
+# Create tensors
+a = tf.constant([1, 2, 3])       # Fixed tensor
+x = tf.Variable(10)               # Changeable tensor
+z = tf.zeros([2, 2])              # All zeros
+o = tf.ones([2, 2])               # All ones
+
+# Operations
+tf.add(a, b)       # Addition
+tf.multiply(a, b)  # Multiplication
+
+# Shape & conversion
+a.shape            # Get shape
+a.numpy()          # Convert to NumPy</div>
+      <div class="exam-box"><div class="exam-label">Key Difference</div><div class="exam-text">tf.constant() → cannot change | tf.Variable() → can change (use .assign())</div></div>
+    </div>
+  </div>
+
+  <div class="topic-card">
+    <div class="topic-title">TensorFlow Workflow (5 Steps)</div>
+    <div class="topic-body">
+      <div class="point"><strong>Step 1 — Train:</strong> Build & train model on PC/cloud</div>
+      <div class="point"><strong>Step 2 — Convert:</strong> Convert to .tflite format (TFLite Converter)</div>
+      <div class="point"><strong>Step 3 — Optimize:</strong> Apply quantization/pruning → reduce size</div>
+      <div class="point"><strong>Step 4 — Deploy:</strong> Put on Android, iOS, Raspberry Pi</div>
+      <div class="point"><strong>Step 5 — Infer:</strong> Run real-time predictions on edge device</div>
+    </div>
+    <div class="exam-box"><div class="exam-label">Memory Trick</div><div class="exam-text">TCODI → Train, Convert, Optimize, Deploy, Infer</div></div>
+  </div>
+
+  <div class="topic-card">
+    <div class="topic-title">Simple ML Model in TensorFlow (Must Know Code)</div>
+    <div class="code-box">model = tf.keras.Sequential([
+    tf.keras.layers.Dense(1, input_shape=[1])
+])
+model.compile(optimizer='sgd', loss='mean_squared_error')
+model.fit(x, y, epochs=100)
+model.predict(np.array([[5]]))</div>
+    <div class="topic-body" style="margin-top:8px;">
+      <div class="point">Sequential = layers arranged one after another</div>
+      <div class="point">Dense = fully connected layer (every input connects to neuron)</div>
+      <div class="point">sgd = Stochastic Gradient Descent (learns step by step)</div>
+      <div class="point">MSE = Mean Squared Error (measures how wrong the prediction is)</div>
+      <div class="point">epochs = how many times model studies the full data</div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 3: CNN -->
+<div id="s-cnn" class="section">
+  <h2>Convolutional Neural Networks (CNN)</h2>
+  <p class="section-intro">CNNs are designed for image data. They mimic how human eyes detect features. <span class="badge badge-blue">Image Recognition</span> <span class="badge badge-purple">Computer Vision</span></p>
+
+  <div class="topic-card">
+    <div class="topic-title">CNN Architecture — Layer by Layer</div>
+    <div class="topic-body">
+      <table class="notes-table">
+        <tr><th>Layer</th><th>Job</th><th>Simple Meaning</th></tr>
+        <tr><td>Input Layer</td><td>Takes raw image</td><td>Stores pixel values (e.g. 32×32×3)</td></tr>
+        <tr><td>Convolutional Layer</td><td>Feature extraction</td><td>Finds edges, corners, shapes using filters</td></tr>
+        <tr><td>Pooling Layer</td><td>Reduce size</td><td>Keeps important parts, throws away the rest (Max/Avg Pooling)</td></tr>
+        <tr><td>Flattening</td><td>Convert 2D → 1D</td><td>Makes data ready for final decision</td></tr>
+        <tr><td>Fully Connected Layer</td><td>High-level reasoning</td><td>Final classification scores</td></tr>
+        <tr><td>Output Layer</td><td>Final answer</td><td>Sigmoid (binary) or Softmax (multi-class)</td></tr>
+      </table>
+    </div>
+    <div class="exam-box"><div class="exam-label">Memory Trick</div><div class="exam-text">I-C-P-F-F-O → "I Can Play Football For Olympics" → Input, Conv, Pool, Flatten, FC, Output</div></div>
+  </div>
+
+  <div class="topic-card">
+    <div class="topic-title">CNN Code (MNIST Digit Recognition)</div>
+    <div class="code-box">model = tf.keras.Sequential([
+    tf.keras.layers.Conv2D(8, (3,3), activation='relu', input_shape=(28,28,1)),
+    tf.keras.layers.MaxPooling2D(2, 2),
+    tf.keras.layers.Flatten(),
+    tf.keras.layers.Dense(10, activation='softmax')
+])
+model.compile(optimizer='adam',
+              loss='sparse_categorical_crossentropy',
+              metrics=['accuracy'])
+model.fit(x_train, y_train, epochs=2)
+loss, accuracy = model.evaluate(x_test, y_test)</div>
+    <div class="topic-body" style="margin-top:8px;">
+      <div class="point">Conv2D → Extracts features from image using 8 filters of size 3×3</div>
+      <div class="point">ReLU → Removes negative values (keeps model non-linear)</div>
+      <div class="point">MaxPooling2D → Keeps maximum value in 2×2 window (reduces size)</div>
+      <div class="point">Softmax → Converts scores to probabilities (for 10 classes: 0–9)</div>
+      <div class="point">Adam → Smart optimizer (better than simple SGD)</div>
+    </div>
+  </div>
+
+  <div class="topic-card">
+    <div class="topic-title">Data Preprocessing for CNN</div>
+    <div class="code-box">x_train = x_train / 255.0         # Normalize: bring to [0,1]
+x_train = x_train.reshape(-1, 28, 28, 1)  # Add channel dimension</div>
+    <div class="topic-body" style="margin-top:8px;">
+      <div class="point">Normalize → Divide by 255 to convert pixel values (0–255) to (0–1). Makes learning faster.</div>
+      <div class="point">Reshape → CNN needs 4D input: (samples, height, width, channels). The -1 means "auto-calculate".</div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 4: TEXT -->
+<div id="s-text" class="section">
+  <h2>Working with Text & Sequences</h2>
+  <p class="section-intro">Computers don't understand text. We convert words → numbers → sequences for the model.</p>
+
+  <div class="topic-card">
+    <div class="topic-title">Why Convert Text to Numbers?</div>
+    <div class="topic-body">
+      <div class="point">Computers only work with numbers, not strings</div>
+      <div class="point">Each word gets a unique number called an index</div>
+      <div class="point">Example: "I love AI" → {I=1, love=2, AI=3} → [1, 2, 3]</div>
+      <br/>
+      <strong style="font-size:13px;">Real-world uses:</strong>
+      <div class="point">Chatbots (customer support)</div>
+      <div class="point">Google Translate</div>
+      <div class="point">Email spam detection</div>
+    </div>
+  </div>
+
+  <div class="topic-card">
+    <div class="topic-title">Tokenizer + Padding (Must Know Code)</div>
+    <div class="code-box">from tensorflow.keras.preprocessing.text import Tokenizer
+from tensorflow.keras.preprocessing.sequence import pad_sequences
+
+texts = ["I love machine learning", "Deep learning is powerful"]
+
+tokenizer = Tokenizer()
+tokenizer.fit_on_texts(texts)        # Learn vocabulary
+
+sequences = tokenizer.texts_to_sequences(texts)  # Convert to numbers
+print(tokenizer.word_index)          # See word→number mapping
+
+padded = pad_sequences(sequences, padding='post')  # Make equal length</div>
+    <div class="topic-body" style="margin-top:8px;">
+      <div class="point">Tokenizer → Learns all unique words and assigns them numbers</div>
+      <div class="point">texts_to_sequences → Converts sentence to list of numbers</div>
+      <div class="point">pad_sequences → Adds zeros to make all sequences equal length (needed for batch training)</div>
+      <div class="point">padding='post' → Zeros added at the END of shorter sequences</div>
+    </div>
+    <div class="exam-box"><div class="exam-label">Why padding?</div><div class="exam-text">Neural networks need fixed-size inputs. Padding adds zeros to shorter sentences so all are same length.</div></div>
+  </div>
+</div>
+
+<!-- SECTION 5: RNN -->
+<div id="s-rnn" class="section">
+  <h2>Advanced RNN — LSTM & GRU</h2>
+  <p class="section-intro">RNNs = Neural networks for sequential data (text, time series). They remember past information.</p>
+
+  <div class="topic-card">
+    <div class="topic-title">Problem with Basic RNN</div>
+    <div class="topic-body">
+      <div class="point">Basic RNNs forget long-term dependencies</div>
+      <div class="point">This is called the <strong>Vanishing Gradient Problem</strong></div>
+      <div class="point">Solution: Use LSTM or GRU instead</div>
+    </div>
+  </div>
+
+  <div class="topic-card">
+    <div class="topic-title">LSTM vs GRU — Comparison</div>
+    <div class="grid2">
+      <div class="compare-card">
+        <div class="compare-title">LSTM (Long Short-Term Memory)</div>
+        <div class="mini-point">3 gates: Input, Forget, Output</div>
+        <div class="mini-point">Also has a Cell State (conveyor belt)</div>
+        <div class="mini-point">Good for long sequences</div>
+        <div class="mini-point">More complex, slower</div>
+        <div class="mini-point">Introduced by Hochreiter & Schmidhuber (1997)</div>
+      </div>
+      <div class="compare-card">
+        <div class="compare-title">GRU (Gated Recurrent Unit)</div>
+        <div class="mini-point">2 gates: Reset Gate, Update Gate</div>
+        <div class="mini-point">No separate cell state</div>
+        <div class="mini-point">Simpler design</div>
+        <div class="mini-point">Faster, often performs well</div>
+        <div class="mini-point">Introduced as alternative to vanilla RNN</div>
+      </div>
+    </div>
+    <div class="exam-box"><div class="exam-label">Key Difference (Exam Favourite)</div><div class="exam-text">LSTM has 3 gates + cell state | GRU has 2 gates, no cell state | Both solve vanishing gradient problem</div></div>
+  </div>
+
+  <div class="topic-card">
+    <div class="topic-title">LSTM Gates — What Each Does</div>
+    <div class="topic-body">
+      <table class="notes-table">
+        <tr><th>Gate</th><th>Job</th></tr>
+        <tr><td>Input Gate</td><td>Decides which new values to add to cell state</td></tr>
+        <tr><td>Forget Gate</td><td>Decides what old information to throw away</td></tr>
+        <tr><td>Output Gate</td><td>Decides what to output as hidden state</td></tr>
+        <tr><td>Cell State</td><td>Carries long-term memory like a conveyor belt</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="topic-card">
+    <div class="topic-title">GRU Gates — What Each Does</div>
+    <div class="topic-body">
+      <table class="notes-table">
+        <tr><th>Gate</th><th>Job</th></tr>
+        <tr><td>Reset Gate</td><td>How much of previous memory to combine with new input</td></tr>
+        <tr><td>Update Gate</td><td>How much of old state to keep vs update</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="topic-card">
+    <div class="topic-title">LSTM Code (Next Word Prediction)</div>
+    <div class="code-box">model = tf.keras.Sequential([
+    tf.keras.layers.Embedding(input_dim=20, output_dim=8),
+    tf.keras.layers.LSTM(16),
+    tf.keras.layers.Dense(20, activation='softmax')
+])
+model.compile(optimizer='adam', loss='sparse_categorical_crossentropy')
+model.fit(X, y, epochs=200)</div>
+    <div class="topic-body" style="margin-top:8px;">
+      <div class="point">Embedding → Converts word numbers into dense vectors (rich representation)</div>
+      <div class="point">LSTM(16) → Recurrent layer with 16 memory units</div>
+      <div class="point">Dense(20, softmax) → Output probabilities for 20 possible words</div>
+    </div>
+  </div>
+
+  <div class="topic-card">
+    <div class="topic-title">RNN vs CNN — Key Comparison</div>
+    <div class="grid2">
+      <div class="compare-card">
+        <div class="compare-title">RNN (including LSTM/GRU)</div>
+        <div class="mini-point">For sequential/time data</div>
+        <div class="mini-point">Has memory of past</div>
+        <div class="mini-point">Use: text, speech, time series</div>
+        <div class="mini-point">Processes data one step at a time</div>
+      </div>
+      <div class="compare-card">
+        <div class="compare-title">CNN</div>
+        <div class="mini-point">For spatial/grid data</div>
+        <div class="mini-point">No memory of sequence</div>
+        <div class="mini-point">Use: images, video frames</div>
+        <div class="mini-point">Processes all pixels in parallel</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 6: TensorBoard -->
+<div id="s-tensorboard" class="section">
+  <h2>TensorBoard Visualization</h2>
+  <p class="section-intro">TensorBoard = TensorFlow's visualization toolkit. It helps you monitor and understand your model training.</p>
+
+  <div class="topic-card">
+    <div class="topic-title">What can TensorBoard show you?</div>
+    <div class="topic-body">
+      <div class="point">Track loss and accuracy over epochs (training progress)</div>
+      <div class="point">Visualize the model graph (layers and operations)</div>
+      <div class="point">View histograms of weights and biases</div>
+      <div class="point">Project embeddings to lower dimensions</div>
+      <div class="point">Display images, text, audio data</div>
+      <div class="point">Profile TensorFlow programs (find bottlenecks)</div>
+    </div>
+  </div>
+
+  <div class="topic-card">
+    <div class="topic-title">TensorBoard Setup Code</div>
+    <div class="code-box">import datetime
+from tensorflow.keras.callbacks import TensorBoard
+
+# Step 1: Load extension
+%load_ext tensorboard
+
+# Step 2: Set log directory
+log_dir = "logs/fit/" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
+
+# Step 3: Create callback
+tensorboard_callback = TensorBoard(log_dir=log_dir, histogram_freq=1)
+
+# Step 4: Pass callback while training
+model.fit(x, y, epochs=10, callbacks=[tensorboard_callback])
+
+# Step 5: Launch TensorBoard
+%tensorboard --logdir logs/fit</div>
+    <div class="topic-body" style="margin-top:8px;">
+      <div class="point">callbacks=[tensorboard_callback] → TensorBoard monitors training automatically</div>
+      <div class="point">histogram_freq=1 → Record weight histograms every epoch</div>
+      <div class="point">log_dir → Folder where all training logs are saved</div>
+    </div>
+    <div class="exam-box"><div class="exam-label">Exam Tip</div><div class="exam-text">TensorBoard is launched AFTER training using %tensorboard --logdir logs/fit. It reads log files saved during training.</div></div>
+  </div>
+</div>
+
+<!-- SECTION 7: Word Vectors -->
+<div id="s-word2vec" class="section">
+  <h2>Word Vectors (Word2Vec)</h2>
+  <p class="section-intro">Word Vectors = way to represent words as numbers so computers can understand their meaning.</p>
+
+  <div class="topic-card">
+    <div class="topic-title">What is Word2Vec?</div>
+    <div class="topic-body">
+      <div class="point">Unsupervised word embedding method</div>
+      <div class="point">Learns word representations from context (surrounding words)</div>
+      <div class="point">Based on the distributional hypothesis: words that appear in similar contexts have similar meanings</div>
+      <div class="point">Most popular method: Skip-gram model</div>
+      <br/>
+      <strong style="font-size:13px;">Skip-gram idea:</strong>
+      <p style="margin-top:6px;font-size:13px;color:var(--color-text-secondary);">Given a word, predict its context (neighbors).<br/>
+      Sentence: "Our company provides smart agriculture solutions..."<br/>
+      Context of "company" = [our, provides]<br/>
+      Context of "AI" = [advanced, deep-learning]</p>
+    </div>
+    <div class="exam-box"><div class="exam-label">In simple words</div><div class="exam-text">"King - Man + Woman = Queen" — Word vectors capture relationships between words mathematically.</div></div>
+  </div>
+
+  <div class="topic-card">
+    <div class="topic-title">Role of Word Vectors in NLP</div>
+    <div class="topic-body">
+      <div class="point">Encodes words numerically so models can process them</div>
+      <div class="point">Similar words get similar vectors (cat & kitten are close)</div>
+      <div class="point">Used in: translation, sentiment analysis, chatbots</div>
+      <div class="point">In TensorFlow: use Embedding layer → converts word index to dense vector</div>
+    </div>
+    <div class="exam-box"><div class="exam-label">MCQ Answer (from 24-25 paper)</div><div class="exam-text">Role of Word Vectors = "Encodes words numerically" (option a)</div></div>
+  </div>
+</div>
+
+<!-- SECTION 8: ADVANCED -->
+<div id="s-advanced" class="section">
+  <h2>Advanced Topics</h2>
+
+  <div class="topic-card">
+    <div class="topic-title">TensorFlow Abstractions (Keras)</div>
+    <div class="topic-body">
+      <div class="point">Keras = High-level API on top of TensorFlow</div>
+      <div class="point">Makes building models easy — no low-level math needed</div>
+      <div class="point">Like using a calculator instead of doing long calculations manually</div>
+      <div class="point">Primary use of Keras: Simplify building and training deep learning models</div>
+    </div>
+    <div class="exam-box"><div class="exam-label">MCQ Answer (24-25 paper Q2.e)</div><div class="exam-text">Primary use of Keras = simplifying building and training of neural networks / deep learning models</div></div>
+  </div>
+
+  <div class="topic-card">
+    <div class="topic-title">Queues & Threads (Data Pipeline)</div>
+    <div class="topic-body">
+      <div class="point"><strong>Thread:</strong> Unit of execution — loads data while model trains (parallel work)</div>
+      <div class="point"><strong>Queue:</strong> FIFO data structure — stores data temporarily for the model</div>
+      <div class="point">Together they create a continuous data pipeline → no idle waiting</div>
+      <br/>
+      <strong style="font-size:13px;">Analogy:</strong>
+      <p style="font-size:13px;color:var(--color-text-secondary);margin-top:4px;">Restaurant: Chef cooks (model trains) while waiters (threads) bring ingredients continuously. Queue = the serving counter where food waits.</p>
+    </div>
+    <div class="code-box">dataset = tf.data.Dataset.from_tensor_slices((X, y))
+dataset = dataset.shuffle(5)
+dataset = dataset.batch(2)
+dataset = dataset.prefetch(tf.data.AUTOTUNE)  # Threads run in parallel</div>
+  </div>
+
+  <div class="topic-card">
+    <div class="topic-title">Distributed TensorFlow</div>
+    <div class="topic-body">
+      <div class="point">Train model on multiple CPUs/GPUs/machines simultaneously</div>
+      <div class="point">Same model copied to multiple devices → each trains on different data part</div>
+      <div class="point">Results combined at the end</div>
+      <div class="point">Benefits: Faster training, handles large data, efficient hardware use</div>
+    </div>
+    <div class="code-box">strategy = tf.distribute.MirroredStrategy()
+with strategy.scope():
+    model = tf.keras.Sequential([...])
+    model.compile(optimizer='adam', loss='mse')</div>
+    <div class="topic-body" style="margin-top:8px;">
+      <div class="point">MirroredStrategy = mirrors model on all available GPUs</div>
+      <div class="point">strategy.scope() = build the model inside this scope for distribution</div>
+    </div>
+  </div>
+
+  <div class="topic-card">
+    <div class="topic-title">Exporting & Serving Models</div>
+    <div class="topic-body">
+      <div class="point">After training, save the model to use in real apps, websites, APIs</div>
+    </div>
+    <div class="code-box">model.save("my_model")                              # Save
+loaded_model = tf.keras.models.load_model("my_model") # Load
+result = loaded_model.predict(np.array([[5]]))          # Predict</div>
+    <div class="exam-box"><div class="exam-label">Real World Use</div><div class="exam-text">Food delivery app: Model trained once → saved → deployed → predicts your food preferences in real time</div></div>
+  </div>
+</div>
+
+<!-- SECTION: QUICK REVISION -->
+<div id="s-qa" class="section">
+  <h2>Quick Revision — Exam Ready</h2>
+
+  <div class="topic-card">
+    <div class="topic-title">MCQ Answers (from Both Papers)</div>
+    <div class="topic-body">
+      <table class="notes-table">
+        <tr><th>Question</th><th>Answer</th></tr>
+        <tr><td>Neural network for image recognition?</td><td>CNN (Convolutional Neural Networks)</td></tr>
+        <tr><td>Neural network for sequential/text data?</td><td>RNN (Recurrent Neural Networks)</td></tr>
+        <tr><td>Role of Word Vectors?</td><td>Encodes words numerically</td></tr>
+        <tr><td>Component to observe model training?</td><td>TensorBoard Visualization</td></tr>
+        <tr><td>Activation for binary classification output?</td><td>Sigmoid</td></tr>
+        <tr><td>Activation for multi-class output?</td><td>Softmax</td></tr>
+        <tr><td>Technique to auto-adjust learning rate?</td><td>Learning Rate Decay (also Adagrad)</td></tr>
+        <tr><td>Handle class imbalance?</td><td>All: Oversampling, Undersampling, SMOTE</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="topic-card">
+    <div class="topic-title">Important 6-mark Topics (Section B)</div>
+    <div class="topic-body">
+      <div class="point">Explain how transfer learning works in TensorFlow with use cases</div>
+      <div class="point">Explore applications of RNNs: language modeling, speech recognition, time series</div>
+      <div class="point">CNN architecture — layer by layer explanation</div>
+      <div class="point">TensorBoard — what it does and how to set it up</div>
+      <div class="point">Word2Vec skip-gram approach</div>
+    </div>
+  </div>
+
+  <div class="topic-card">
+    <div class="topic-title">Important 10-mark Topics (Section C)</div>
+    <div class="topic-body">
+      <div class="point">CNN architecture with TensorFlow/Keras code for image classification</div>
+      <div class="point">RNN vs CNN — working and comparison</div>
+      <div class="point">Advanced RNN: LSTM and GRU techniques for text/sequences</div>
+      <div class="point">Distributed TensorFlow: model parallelism and data parallelism</div>
+    </div>
+  </div>
+
+  <div class="topic-card">
+    <div class="topic-title">Transfer Learning — Quick Summary</div>
+    <div class="topic-body">
+      <div class="point">Use a model trained on one task and apply it to a different but related task</div>
+      <div class="point">Instead of training from scratch, start with pre-trained weights</div>
+      <div class="point">Example: Use VGG16 (trained on ImageNet) → fine-tune for medical imaging</div>
+      <div class="point">Benefits: Saves time, needs less data, higher accuracy</div>
+      <div class="point">In TensorFlow: load pre-trained model → freeze layers → add new layers → retrain</div>
+    </div>
+    <div class="exam-box"><div class="exam-label">Analogy</div><div class="exam-text">Like a doctor who already knows biology — they don't re-learn it, they just learn the new specialty on top.</div></div>
+  </div>
+
+  <button class="ask-btn" onclick="sendPrompt('Explain transfer learning in TensorFlow with a code example for Unit 4 PDA exam')">Ask Claude to explain Transfer Learning in detail ↗</button>
+  <button class="ask-btn" onclick="sendPrompt('Give me 10 practice questions for Unit 4 TensorFlow and AI for PDA exam')">Generate practice questions for Unit 4 ↗</button>
+</div>
+
+</div>
+
+<script>
+function show(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('s-' + id).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>

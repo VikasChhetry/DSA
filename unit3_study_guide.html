@@ -1,0 +1,791 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+.nav{display:flex;gap:6px;flex-wrap:wrap;padding:1rem 0 1.2rem}
+.nav button{font-size:12px;padding:5px 13px;border-radius:20px;border:0.5px solid var(--color-border-secondary);background:var(--color-background-primary);color:var(--color-text-primary);cursor:pointer}
+.nav button.active{background:#185FA5;color:#E6F1FB;border-color:#185FA5}
+.sec{display:none}.sec.active{display:block}
+.card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:1rem 1.25rem;margin-bottom:1rem}
+.t1{font-size:15px;font-weight:500;color:var(--color-text-primary);margin-bottom:5px}
+.t2{font-size:13px;color:var(--color-text-secondary);line-height:1.75}
+.badge{display:inline-block;font-size:11px;padding:2px 9px;border-radius:10px;font-weight:500;margin-bottom:8px}
+.hot{background:#FCEBEB;color:#A32D2D}
+.med{background:#FAEEDA;color:#854F0B}
+.tip{background:#E1F5EE;color:#0F6E56}
+.info-b{background:#E6F1FB;color:#0C447C}
+.cb{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:10px 14px;font-family:var(--font-mono);font-size:12px;color:var(--color-text-primary);margin:8px 0;border:0.5px solid var(--color-border-tertiary);white-space:pre;overflow-x:auto;line-height:1.6}
+.hr{border:none;border-top:0.5px solid var(--color-border-tertiary);margin:10px 0}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:8px 0}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:8px 0}
+.mini{background:var(--color-background-secondary);padding:10px;border-radius:8px}
+.mini-title{font-size:13px;font-weight:500;color:var(--color-text-primary)}
+.mini-sub{font-size:12px;color:var(--color-text-secondary);margin-top:2px;line-height:1.5}
+.qtoggle{font-size:12px;color:#185FA5;cursor:pointer;border:none;background:none;padding:3px 0;display:block;margin-top:6px}
+.qbox{display:none;background:#E6F1FB;border-radius:var(--border-radius-md);padding:10px;margin-top:8px;font-size:13px;color:#042C53;line-height:1.7}
+.step{display:flex;gap:10px;align-items:flex-start;margin-bottom:10px}
+.step-num{min-width:24px;height:24px;border-radius:50%;background:#E6F1FB;color:#0C447C;font-size:12px;font-weight:500;display:flex;align-items:center;justify-content:center}
+.step-body{font-size:13px;color:var(--color-text-secondary);line-height:1.6}
+.step-title{font-size:13px;font-weight:500;color:var(--color-text-primary);margin-bottom:2px}
+.tag{display:inline-block;font-size:11px;padding:2px 8px;border-radius:8px;background:#E1F5EE;color:#085041;margin:2px}
+.warn{background:#FAEEDA;color:#633806;border-radius:var(--border-radius-md);padding:8px 12px;font-size:13px;margin:8px 0;border-left:3px solid #EF9F27;border-radius:0}
+.op-row{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:0.5px solid var(--color-border-tertiary);font-size:13px}
+.op-row:last-child{border-bottom:none}
+.op-sym{font-family:var(--font-mono);font-size:12px;background:#E6F1FB;color:#0C447C;padding:2px 8px;border-radius:6px;min-width:48px;text-align:center}
+.op-desc{color:var(--color-text-secondary);flex:1}
+.op-ex{font-family:var(--font-mono);font-size:11px;color:#185FA5}
+.smgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:1rem}
+.met{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:12px;text-align:center}
+.met-n{font-size:22px;font-weight:500;color:var(--color-text-primary)}
+.met-l{font-size:11px;color:var(--color-text-secondary);margin-top:2px}
+.q-num{font-size:11px;font-weight:500;color:#185FA5;margin-bottom:3px}
+.q-text{font-size:14px;font-weight:500;color:var(--color-text-primary);margin-bottom:4px}
+.pill{display:inline-flex;align-items:center;gap:4px;font-size:11px;padding:2px 10px;border-radius:10px;border:0.5px solid var(--color-border-secondary);color:var(--color-text-secondary);margin-right:4px;margin-bottom:4px}
+</style>
+
+<h2 class="sr-only">Unit 3 Data Engineering Foundation — Detailed Study Guide with full code, definitions and expected questions</h2>
+
+<div class="nav">
+  <button class="active" onclick="show('home')">Home</button>
+  <button onclick="show('sqlite-intro')">SQLite intro</button>
+  <button onclick="show('sqlite-python')">SQLite + Python</button>
+  <button onclick="show('ddl')">DDL commands</button>
+  <button onclick="show('dml')">DML commands</button>
+  <button onclick="show('errors')">Error handling</button>
+  <button onclick="show('nosql')">NoSQL basics</button>
+  <button onclick="show('mongodb')">MongoDB</button>
+  <button onclick="show('operators')">Operators</button>
+  <button onclick="show('aggregation')">Aggregation</button>
+  <button onclick="show('compass')">Compass</button>
+  <button onclick="show('questions')">Expected Qs</button>
+</div>
+
+<div id="home" class="sec active">
+  <div class="smgrid">
+    <div class="met"><div class="met-n">5</div><div class="met-l">Major topics</div></div>
+    <div class="met"><div class="met-n">13+</div><div class="met-l">Expected questions</div></div>
+    <div class="met"><div class="met-n">8 hrs</div><div class="met-l">Unit weightage</div></div>
+    <div class="met"><div class="met-n">2026</div><div class="met-l">Exam year</div></div>
+  </div>
+  <div class="card">
+    <div class="t1">What is Unit 3 about?</div>
+    <div class="t2">This unit teaches how real software connects to databases — both traditional (SQLite/SQL) and modern NoSQL (MongoDB). You will learn to write Python code that talks to a database, create/modify tables, insert/read/delete data, handle errors, and query MongoDB using shell commands and operators.</div>
+  </div>
+  <div class="card">
+    <div class="t1">Topic roadmap</div>
+    <div style="margin-top:8px">
+      <div class="step"><div class="step-num">1</div><div class="step-body"><div class="step-title">SQLite Introduction</div>What is SQLite, features, when to use it, install commands</div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-body"><div class="step-title">Connecting SQLite with Python</div>sqlite3 module, connect(), cursor(), execute(), fetchall(), close()</div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-body"><div class="step-title">DDL — Data Definition Language</div>CREATE, DROP, ALTER, TRUNCATE, RENAME — structure of database</div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-body"><div class="step-title">DML — Data Manipulation Language</div>INSERT, UPDATE, DELETE, SELECT — working with data</div></div>
+      <div class="step"><div class="step-num">5</div><div class="step-body"><div class="step-title">Error Handling in SQLite</div>try/except, sqlite_last_error(), sqlite_error_string()</div></div>
+      <div class="step"><div class="step-num">6</div><div class="step-body"><div class="step-title">NoSQL and MongoDB</div>What is NoSQL, document model, collections, BSON, shell commands</div></div>
+      <div class="step"><div class="step-num">7</div><div class="step-body"><div class="step-title">MongoDB Operators + Aggregation</div>Comparison, logical operators, $match, $group, $sort, $project</div></div>
+      <div class="step"><div class="step-num">8</div><div class="step-body"><div class="step-title">MongoDB Compass</div>GUI tool to visually query and explore MongoDB</div></div>
+    </div>
+  </div>
+</div>
+
+<div id="sqlite-intro" class="sec">
+  <div class="card">
+    <span class="badge hot">Very likely in exam</span>
+    <div class="t1">Definition of SQLite</div>
+    <div class="t2">SQLite is a C-language library that implements a small, fast, self-contained, high-reliability, full-featured SQL database engine. It is the most widely deployed database engine in the world. Unlike other databases like MySQL or Oracle, SQLite does not require a separate server — it stores the entire database in a single file on disk and can be embedded directly into any application.</div>
+    <div class="warn">Key exam point: SQLite is serverless and zero-configuration — no admin setup needed.</div>
+  </div>
+  <div class="card">
+    <span class="badge hot">Write all 9 features in exam</span>
+    <div class="t1">Features of SQLite (exam favourite)</div>
+    <div style="margin-top:8px">
+      <div class="step"><div class="step-num">1</div><div class="step-body"><div class="step-title">Serverless</div>No separate server process needed. The database engine runs in the same process as your application.</div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-body"><div class="step-title">Zero-configuration</div>No installation, no setup, no administration required. Just include the library and use it.</div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-body"><div class="step-title">Single cross-platform file</div>The entire database (tables, indexes, data) lives in one .db file that works on any OS.</div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-body"><div class="step-title">Very lightweight</div>Less than 400KB fully configured, or less than 250KB with optional features omitted.</div></div>
+      <div class="step"><div class="step-num">5</div><div class="step-body"><div class="step-title">Self-contained</div>No external dependencies — the library itself is all you need.</div></div>
+      <div class="step"><div class="step-num">6</div><div class="step-body"><div class="step-title">ACID-compliant transactions</div>Supports Atomicity, Consistency, Isolation, Durability — safe access from multiple threads/processes.</div></div>
+      <div class="step"><div class="step-num">7</div><div class="step-body"><div class="step-title">Supports SQL92 standard</div>Supports most SQL2 query language features (CREATE, SELECT, INSERT, UPDATE, DELETE, etc.)</div></div>
+      <div class="step"><div class="step-num">8</div><div class="step-body"><div class="step-title">Written in ANSI-C</div>Simple and easy-to-use API, portable across all systems.</div></div>
+      <div class="step"><div class="step-num">9</div><div class="step-body"><div class="step-title">Cross-platform</div>Available on UNIX (Linux, macOS, Android, iOS) and Windows (Win32, WinCE, WinRT).</div></div>
+    </div>
+  </div>
+  <div class="card">
+    <span class="badge tip">SQLite shell commands</span>
+    <div class="t1">Common SQLite terminal commands</div>
+    <div class="cb">sqlite3 mydb.db         -- open or create a database
+.databases              -- list all databases
+.tables                 -- list all tables in current DB
+.schema student         -- show structure of 'student' table
+.quit                   -- exit SQLite shell
+
+-- Creating a table
+CREATE TABLE student(RollNo INT PRIMARY KEY, Name TEXT);
+
+-- Insert data
+INSERT INTO student VALUES(101, 'Aman');
+INSERT INTO student VALUES(102, 'Raman');
+
+-- View all data
+SELECT * FROM student;
+
+-- View with condition
+SELECT * FROM student WHERE RollNo = 101;
+
+-- Delete a record
+DELETE FROM student WHERE RollNo = 101;</div>
+  </div>
+</div>
+
+<div id="sqlite-python" class="sec">
+  <div class="card">
+    <span class="badge hot">Most important — write full code in exam</span>
+    <div class="t1">Connecting SQLite to Python — step by step</div>
+    <div style="margin-top:10px">
+      <div class="step"><div class="step-num">1</div><div class="step-body"><div class="step-title">Import the module</div><code style="font-size:12px;color:#185FA5">import sqlite3</code> — Python has sqlite3 built-in, no pip install needed.</div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-body"><div class="step-title">Create a connection</div><code style="font-size:12px;color:#185FA5">conn = sqlite3.connect('mydb.db')</code> — creates the file if it does not exist.</div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-body"><div class="step-title">Create a cursor</div><code style="font-size:12px;color:#185FA5">cursor = conn.cursor()</code> — cursor is the object that executes SQL queries.</div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-body"><div class="step-title">Execute a query</div><code style="font-size:12px;color:#185FA5">cursor.execute('SELECT sqlite_version()')</code></div></div>
+      <div class="step"><div class="step-num">5</div><div class="step-body"><div class="step-title">Fetch results</div><code style="font-size:12px;color:#185FA5">result = cursor.fetchall()</code> — gets all rows returned by the query.</div></div>
+      <div class="step"><div class="step-num">6</div><div class="step-body"><div class="step-title">Close the connection</div><code style="font-size:12px;color:#185FA5">conn.close()</code> — always close to free resources.</div></div>
+    </div>
+    <div class="cb">import sqlite3
+
+conn = sqlite3.connect('students.db')
+cursor = conn.cursor()
+
+cursor.execute('''CREATE TABLE IF NOT EXISTS student
+                  (RollNo INT PRIMARY KEY, Name TEXT, Age INT)''')
+
+cursor.execute("INSERT INTO student VALUES (101, 'Aman', 20)")
+cursor.execute("INSERT INTO student VALUES (102, 'Raman', 21)")
+
+conn.commit()
+
+cursor.execute("SELECT * FROM student")
+rows = cursor.fetchall()
+
+for row in rows:
+    print(row)
+
+conn.close()</div>
+  </div>
+  <div class="card">
+    <span class="badge tip">Cursor methods — must know</span>
+    <div class="t1">Important cursor methods</div>
+    <div style="margin-top:8px">
+      <div class="op-row"><div class="op-sym">execute()</div><div class="op-desc">Runs a single SQL statement</div><div class="op-ex">cursor.execute("SELECT * FROM t")</div></div>
+      <div class="op-row"><div class="op-sym">executemany()</div><div class="op-desc">Runs same SQL for a list of tuples (multiple rows at once)</div><div class="op-ex">cursor.executemany("INSERT INTO t VALUES (?,?)", data)</div></div>
+      <div class="op-row"><div class="op-sym">fetchall()</div><div class="op-desc">Returns all rows from last SELECT as a list</div><div class="op-ex">rows = cursor.fetchall()</div></div>
+      <div class="op-row"><div class="op-sym">fetchone()</div><div class="op-desc">Returns just the first row from the result</div><div class="op-ex">row = cursor.fetchone()</div></div>
+      <div class="op-row"><div class="op-sym">commit()</div><div class="op-desc">Saves changes permanently (on connection, not cursor)</div><div class="op-ex">conn.commit()</div></div>
+      <div class="op-row"><div class="op-sym">close()</div><div class="op-desc">Closes connection and frees resources</div><div class="op-ex">conn.close()</div></div>
+    </div>
+    <div class="warn">Remember: Use conn.commit() after INSERT/UPDATE/DELETE. Without it, changes are NOT saved to disk.</div>
+  </div>
+  <div class="card">
+    <span class="badge med">Using placeholders (safe queries)</span>
+    <div class="t1">Parameterized queries — use ? for safe input</div>
+    <div class="cb">import sqlite3
+
+conn = sqlite3.connect('students.db')
+cursor = conn.cursor()
+
+name = "Aman"
+age = 20
+cursor.execute("INSERT INTO student VALUES (?, ?)", (name, age))
+
+cursor.execute("SELECT * FROM student WHERE Name = ?", (name,))
+result = cursor.fetchall()
+print(result)
+
+conn.commit()
+conn.close()</div>
+    <div class="t2" style="margin-top:6px">Using ? prevents SQL injection attacks — always prefer this over string formatting.</div>
+  </div>
+</div>
+
+<div id="ddl" class="sec">
+  <div class="card">
+    <span class="badge hot">Very likely in exam</span>
+    <div class="t1">Definition of DDL (Data Definition Language)</div>
+    <div class="t2">DDL stands for Data Definition Language. It consists of SQL commands that define and manage the structure (schema) of a database. DDL deals with the skeleton of the database — creating tables, modifying their structure, and deleting them. DDL commands auto-commit — changes cannot be rolled back.</div>
+  </div>
+  <div class="card">
+    <div class="t1">DDL commands — all 6 with examples</div>
+    <div style="margin-top:10px">
+      <div class="step"><div class="step-num" style="background:#FCEBEB;color:#A32D2D">C</div><div class="step-body"><div class="step-title">CREATE — creates a new table/database/view/index</div>
+<div class="cb">CREATE TABLE student (
+    RollNo INT PRIMARY KEY,
+    Name   TEXT NOT NULL,
+    Age    INT,
+    Email  TEXT
+);</div></div></div>
+      <div class="step"><div class="step-num" style="background:#FCEBEB;color:#A32D2D">D</div><div class="step-body"><div class="step-title">DROP — deletes the entire table including all data</div>
+<div class="cb">DROP TABLE student;
+-- Careful: this removes the table completely!</div></div></div>
+      <div class="step"><div class="step-num" style="background:#FAEEDA;color:#854F0B">A</div><div class="step-body"><div class="step-title">ALTER — modifies existing table structure (add/rename/drop columns)</div>
+<div class="cb">-- Add a new column
+ALTER TABLE student ADD COLUMN Phone TEXT;
+
+-- In Python using MariaDB:
+cur.execute("ALTER TABLE contacts ADD COLUMN IF NOT EXISTS (contact_since INT)")</div></div></div>
+      <div class="step"><div class="step-num" style="background:#FAEEDA;color:#854F0B">T</div><div class="step-body"><div class="step-title">TRUNCATE — deletes all rows but keeps the table structure</div>
+<div class="cb">TRUNCATE TABLE student;
+-- Table remains, but all rows are deleted</div></div></div>
+      <div class="step"><div class="step-num" style="background:#E1F5EE;color:#085041">R</div><div class="step-body"><div class="step-title">RENAME — renames an existing table</div>
+<div class="cb">ALTER TABLE student RENAME TO learner;</div></div></div>
+      <div class="step"><div class="step-num" style="background:#E1F5EE;color:#085041">C</div><div class="step-body"><div class="step-title">COMMENT — adds comments to the data dictionary</div>
+<div class="cb">COMMENT ON TABLE student IS 'Stores student records';</div></div></div>
+    </div>
+  </div>
+  <div class="card">
+    <span class="badge tip">DDL in Python (mariadb connector)</span>
+    <div class="t1">ALTER TABLE using Python — full code</div>
+    <div class="cb">import mariadb
+import sys
+
+def alter_contacts(cur):
+    try:
+        cur.execute(
+            "ALTER TABLE test.contacts ADD COLUMN IF NOT EXISTS (contact_since INT)"
+        )
+    except mariadb.Error as e:
+        print(f"Error altering contacts: {e}")
+        conn.close()
+        sys.exit(1)
+
+try:
+    conn = mariadb.connect(
+        host="localhost",
+        port=3306,
+        user="root",
+        password="password"
+    )
+except mariadb.Error as e:
+    print(f"Error connecting to database: {e}")
+    sys.exit(1)
+
+cur = conn.cursor()
+alter_contacts(cur)
+conn.close()</div>
+    <div class="warn">Key note: The function must be defined before it is called. Always call conn.close() at the end to free resources.</div>
+  </div>
+</div>
+
+<div id="dml" class="sec">
+  <div class="card">
+    <span class="badge hot">Very likely in exam</span>
+    <div class="t1">Definition of DML (Data Manipulation Language)</div>
+    <div class="t2">DML stands for Data Manipulation Language. These are SQL commands used to manipulate (add, change, delete, retrieve) the actual data stored inside tables. Unlike DDL which changes structure, DML changes content. DML commands can be rolled back (undone) if not committed.</div>
+    <div class="grid2" style="margin-top:10px">
+      <div class="mini"><div class="mini-title">INSERT</div><div class="mini-sub">Adds new rows of data into a table</div></div>
+      <div class="mini"><div class="mini-title">UPDATE</div><div class="mini-sub">Modifies existing data in rows</div></div>
+      <div class="mini"><div class="mini-title">DELETE</div><div class="mini-sub">Removes rows from a table</div></div>
+      <div class="mini"><div class="mini-title">SELECT</div><div class="mini-sub">Reads and retrieves data (also called DQL)</div></div>
+    </div>
+  </div>
+  <div class="card">
+    <span class="badge hot">Write all 4 with code in exam</span>
+    <div class="t1">INSERT — adding data</div>
+    <div class="cb">-- Insert a single row
+INSERT INTO student (RollNo, Name, Age) VALUES (101, 'Aman', 20);
+
+-- Insert without column names (must match order)
+INSERT INTO student VALUES (102, 'Raman', 21);
+
+-- Insert multiple rows at once
+INSERT INTO student VALUES
+    (103, 'Kiran', 22),
+    (104, 'Priya', 20);</div>
+    <div class="t1" style="margin-top:12px">UPDATE — modifying data</div>
+    <div class="cb">-- Update a specific row
+UPDATE student SET Age = 25 WHERE RollNo = 101;
+
+-- Update multiple columns
+UPDATE student SET Age = 22, Name = 'Aman Kumar' WHERE RollNo = 101;
+
+-- Update all rows (no WHERE — be careful!)
+UPDATE student SET Age = 20;</div>
+    <div class="t1" style="margin-top:12px">DELETE — removing data</div>
+    <div class="cb">-- Delete a specific row
+DELETE FROM student WHERE RollNo = 101;
+
+-- Delete rows matching condition
+DELETE FROM student WHERE Age < 18;
+
+-- Delete all rows (table still exists)
+DELETE FROM student;</div>
+    <div class="t1" style="margin-top:12px">SELECT — reading data</div>
+    <div class="cb">-- Get all rows and columns
+SELECT * FROM student;
+
+-- Get specific columns
+SELECT Name, Age FROM student;
+
+-- With a condition (WHERE)
+SELECT * FROM student WHERE Age > 20;
+
+-- With AND / OR
+SELECT * FROM student WHERE Age > 18 AND Name = 'Aman';
+
+-- Sort results
+SELECT * FROM student ORDER BY Age DESC;</div>
+  </div>
+  <div class="card">
+    <span class="badge tip">DML in Python — full code example</span>
+    <div class="t1">INSERT, UPDATE, DELETE using Python + mariadb</div>
+    <div class="cb">import mariadb
+import sys
+
+def add_contact(cur, first, last, email):
+    cur.execute(
+        "INSERT INTO test.contacts(first_name, last_name, email) VALUES (?, ?, ?)",
+        (first, last, email)
+    )
+
+def add_multiple(cur, data):
+    cur.executemany(
+        "INSERT INTO test.contacts(first_name, last_name, email) VALUES (?, ?, ?)",
+        data
+    )
+
+try:
+    conn = mariadb.connect(
+        host="localhost",
+        port=3306,
+        user="root",
+        password="password",
+        autocommit=True   # Important! Must set to True for auto-save
+    )
+except mariadb.Error as e:
+    print(f"Connection error: {e}")
+    sys.exit(1)
+
+cur = conn.cursor()
+
+add_contact(cur, "Aman", "Sharma", "aman@example.com")
+
+contacts = [
+    ("Raman", "Singh", "raman@example.com"),
+    ("Priya", "Verma", "priya@example.com"),
+    ("Kiran", "Kumar", "kiran@example.com")
+]
+add_multiple(cur, contacts)
+
+cur.execute("SELECT * FROM test.contacts")
+for row in cur.fetchall():
+    print(row)
+
+conn.close()</div>
+    <div class="warn">autocommit=True is required because by default Python DB connectors do NOT auto-save. Without it, your INSERT/UPDATE/DELETE will not be written to disk.</div>
+  </div>
+</div>
+
+<div id="errors" class="sec">
+  <div class="card">
+    <span class="badge med">Error handling — important concept</span>
+    <div class="t1">What is error handling in SQLite?</div>
+    <div class="t2">Error handling means writing code that can gracefully handle problems when database operations fail — like connection errors, duplicate keys, or invalid queries. Instead of the program crashing, it catches the error and shows a useful message.</div>
+  </div>
+  <div class="card">
+    <div class="t1">Three ways to access SQLite errors</div>
+    <div style="margin-top:8px">
+      <div class="step"><div class="step-num">1</div><div class="step-body"><div class="step-title">Third parameter to sqlite_open()</div>If SQLite cannot open the database, it returns false and stores the error message in $sqlite_error (passed by reference).</div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-body"><div class="step-title">sqlite_last_error()</div>Returns the error code (a number) for the most recent error. Resets after every query — so check immediately after each operation.</div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-body"><div class="step-title">sqlite_error_string()</div>Converts the numeric error code into a human-readable error message.</div></div>
+    </div>
+  </div>
+  <div class="card">
+    <span class="badge hot">Error handling code — Python (most important)</span>
+    <div class="t1">try/except for SQLite errors in Python</div>
+    <div class="cb">import sqlite3
+
+try:
+    conn = sqlite3.connect('students.db')
+    cursor = conn.cursor()
+
+    cursor.execute('''CREATE TABLE IF NOT EXISTS student
+                      (RollNo INT PRIMARY KEY, Name TEXT)''')
+
+    cursor.execute("INSERT INTO student VALUES (101, 'Aman')")
+    cursor.execute("INSERT INTO student VALUES (101, 'Raman')")  # Duplicate!
+
+    conn.commit()
+
+except sqlite3.IntegrityError as e:
+    print(f"Integrity Error (e.g. duplicate key): {e}")
+
+except sqlite3.OperationalError as e:
+    print(f"Operational Error (e.g. table not found): {e}")
+
+except sqlite3.Error as e:
+    print(f"General SQLite Error: {e}")
+
+finally:
+    if conn:
+        conn.close()
+        print("Connection closed.")</div>
+    <div class="warn">The finally block always runs — even if an error occurs. Use it to ensure the connection is always closed.</div>
+  </div>
+  <div class="card">
+    <div class="t1">Common SQLite error types</div>
+    <div style="margin-top:6px">
+      <div class="op-row"><div class="op-sym" style="min-width:160px">IntegrityError</div><div class="op-desc">Primary key violation, UNIQUE constraint failed</div></div>
+      <div class="op-row"><div class="op-sym" style="min-width:160px">OperationalError</div><div class="op-desc">Table not found, wrong syntax, disk full</div></div>
+      <div class="op-row"><div class="op-sym" style="min-width:160px">ProgrammingError</div><div class="op-desc">Wrong number of bindings, cursor used after close</div></div>
+      <div class="op-row"><div class="op-sym" style="min-width:160px">DatabaseError</div><div class="op-desc">Parent class for all database-related errors</div></div>
+      <div class="op-row"><div class="op-sym" style="min-width:160px">sqlite3.Error</div><div class="op-desc">Catches all SQLite errors (most general)</div></div>
+    </div>
+  </div>
+</div>
+
+<div id="nosql" class="sec">
+  <div class="card">
+    <span class="badge hot">Definition question — very likely</span>
+    <div class="t1">What is NoSQL?</div>
+    <div class="t2">NoSQL stands for "Not Only SQL". It refers to a type of database that does not use the traditional relational table model. Instead of storing data in rows and columns, NoSQL databases store data in flexible formats like documents, key-value pairs, graphs, or columns. NoSQL databases are designed for large-scale, distributed, high-performance applications where data structure may vary.</div>
+  </div>
+  <div class="card">
+    <span class="badge hot">Types — always asked</span>
+    <div class="t1">Four types of NoSQL databases</div>
+    <div class="grid2" style="margin-top:8px">
+      <div class="mini"><div class="mini-title">Document stores</div><div class="mini-sub">Data stored as JSON/BSON documents. Example: MongoDB, CouchDB</div></div>
+      <div class="mini"><div class="mini-title">Key-value stores</div><div class="mini-sub">Simple key → value pairs. Example: Redis, DynamoDB</div></div>
+      <div class="mini"><div class="mini-title">Column-family stores</div><div class="mini-sub">Data in columns grouped by family. Example: Cassandra, HBase</div></div>
+      <div class="mini"><div class="mini-title">Graph databases</div><div class="mini-sub">Data as nodes and edges for relationships. Example: Neo4j</div></div>
+    </div>
+  </div>
+  <div class="card">
+    <span class="badge hot">SQL vs NoSQL comparison table — exam favourite</span>
+    <div class="t1">SQL (RDBMS) vs NoSQL comparison</div>
+    <div style="margin-top:10px;overflow-x:auto">
+      <table style="width:100%;font-size:13px;border-collapse:collapse;table-layout:fixed">
+        <tr style="background:var(--color-background-secondary)">
+          <th style="padding:8px;text-align:left;font-weight:500;border:0.5px solid var(--color-border-tertiary)">Feature</th>
+          <th style="padding:8px;text-align:left;font-weight:500;border:0.5px solid var(--color-border-tertiary)">SQL / RDBMS</th>
+          <th style="padding:8px;text-align:left;font-weight:500;border:0.5px solid var(--color-border-tertiary)">NoSQL (MongoDB)</th>
+        </tr>
+        <tr><td style="padding:7px 8px;border:0.5px solid var(--color-border-tertiary);color:var(--color-text-secondary)">Data storage</td><td style="padding:7px 8px;border:0.5px solid var(--color-border-tertiary)">Tables with rows and columns</td><td style="padding:7px 8px;border:0.5px solid var(--color-border-tertiary)">Documents (JSON/BSON) in collections</td></tr>
+        <tr style="background:var(--color-background-secondary)"><td style="padding:7px 8px;border:0.5px solid var(--color-border-tertiary);color:var(--color-text-secondary)">Schema</td><td style="padding:7px 8px;border:0.5px solid var(--color-border-tertiary)">Fixed schema (predefined columns)</td><td style="padding:7px 8px;border:0.5px solid var(--color-border-tertiary)">Schema-less (flexible structure)</td></tr>
+        <tr><td style="padding:7px 8px;border:0.5px solid var(--color-border-tertiary);color:var(--color-text-secondary)">Query language</td><td style="padding:7px 8px;border:0.5px solid var(--color-border-tertiary)">SQL</td><td style="padding:7px 8px;border:0.5px solid var(--color-border-tertiary)">MQL (MongoDB Query Language)</td></tr>
+        <tr style="background:var(--color-background-secondary)"><td style="padding:7px 8px;border:0.5px solid var(--color-border-tertiary);color:var(--color-text-secondary)">Scaling</td><td style="padding:7px 8px;border:0.5px solid var(--color-border-tertiary)">Vertical (bigger server)</td><td style="padding:7px 8px;border:0.5px solid var(--color-border-tertiary)">Horizontal (more servers — sharding)</td></tr>
+        <tr><td style="padding:7px 8px;border:0.5px solid var(--color-border-tertiary);color:var(--color-text-secondary)">Joins</td><td style="padding:7px 8px;border:0.5px solid var(--color-border-tertiary)">Supports JOIN operations</td><td style="padding:7px 8px;border:0.5px solid var(--color-border-tertiary)">Does not support JOIN (embed instead)</td></tr>
+        <tr style="background:var(--color-background-secondary)"><td style="padding:7px 8px;border:0.5px solid var(--color-border-tertiary);color:var(--color-text-secondary)">ACID</td><td style="padding:7px 8px;border:0.5px solid var(--color-border-tertiary)">Fully ACID</td><td style="padding:7px 8px;border:0.5px solid var(--color-border-tertiary)">Multi-document ACID from v4.0+</td></tr>
+        <tr><td style="padding:7px 8px;border:0.5px solid var(--color-border-tertiary);color:var(--color-text-secondary)">Examples</td><td style="padding:7px 8px;border:0.5px solid var(--color-border-tertiary)">MySQL, PostgreSQL, SQLite, Oracle</td><td style="padding:7px 8px;border:0.5px solid var(--color-border-tertiary)">MongoDB, Redis, Cassandra, CouchDB</td></tr>
+        <tr style="background:var(--color-background-secondary)"><td style="padding:7px 8px;border:0.5px solid var(--color-border-tertiary);color:var(--color-text-secondary)">Best for</td><td style="padding:7px 8px;border:0.5px solid var(--color-border-tertiary)">Structured, relational data</td><td style="padding:7px 8px;border:0.5px solid var(--color-border-tertiary)">Unstructured, large-scale, fast data</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div id="mongodb" class="sec">
+  <div class="card">
+    <span class="badge hot">Definition — write this in exam</span>
+    <div class="t1">What is MongoDB?</div>
+    <div class="t2">MongoDB is an open-source, document-oriented NoSQL database designed to store large amounts of data. Data is stored as BSON (Binary JSON) documents instead of rows. It provides high performance, high availability, and easy scalability. MongoDB is used by Facebook, Nokia, eBay, Adobe, and Google. It supports languages including Python, Java, Node.js, C++, Go, PHP, Ruby, and more.</div>
+  </div>
+  <div class="card">
+    <span class="badge hot">Features — write all 6 in exam</span>
+    <div class="t1">Features of MongoDB</div>
+    <div style="margin-top:8px">
+      <div class="step"><div class="step-num">1</div><div class="step-body"><div class="step-title">Schema-less database</div>One collection can hold documents with completely different fields. No need to define a schema before inserting data.</div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-body"><div class="step-title">Document-oriented</div>All data is stored as documents (in BSON format — Binary JSON). Each document has a unique _id field (acts as primary key).</div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-body"><div class="step-title">Indexing</div>Every field can be indexed (primary and secondary). This makes searching much faster — less time to find data in large collections.</div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-body"><div class="step-title">Scalability (Sharding)</div>MongoDB distributes data across multiple servers using sharding. A shard key splits data into chunks and spreads them across servers. New servers can be added to a running database.</div></div>
+      <div class="step"><div class="step-num">5</div><div class="step-body"><div class="step-title">Replication</div>MongoDB creates multiple copies of data on different servers (replica sets). If one server fails, data is retrieved from another. Ensures high availability and zero data loss.</div></div>
+      <div class="step"><div class="step-num">6</div><div class="step-body"><div class="step-title">Aggregation</div>Allows performing operations on grouped data. Like GROUP BY in SQL. Provides three methods: aggregation pipeline, map-reduce, and single-purpose aggregation.</div></div>
+    </div>
+    <div class="warn">Max document size = 16MB. Max nesting depth = 100 levels. Data stored as BSON (Binary JSON).</div>
+  </div>
+  <div class="card">
+    <span class="badge hot">Shell commands — must memorize with syntax</span>
+    <div class="t1">MongoDB shell commands — complete list</div>
+    <div class="cb">-- Database commands
+show dbs                          -- list all databases
+db                                -- show current database name
+use mydb                          -- switch to / create database
+
+-- Collection commands
+db.createCollection('students')   -- create a collection
+show collections                  -- list all collections
+
+-- INSERT
+db.students.insertOne({name:"Aman", age:20, city:"Noida"})
+
+db.students.insertMany([
+  {name:"Raman", age:21, city:"Delhi"},
+  {name:"Priya", age:22, city:"Lucknow"}
+])
+
+-- READ
+db.students.find()                -- all documents
+db.students.find().pretty()       -- formatted output
+db.students.find({city:"Noida"})  -- with filter
+db.students.find({age:{$gt:20}})  -- age > 20
+
+-- UPDATE
+db.students.update(
+  {name:"Aman"},
+  {$set:{age:25, email:"aman@gmail.com"}}
+)
+
+-- DELETE
+db.students.deleteOne({name:"Aman"})       -- delete one
+db.students.deleteMany({city:"Delhi"})     -- delete many</div>
+  </div>
+  <div class="card">
+    <span class="badge tip">Advantages and disadvantages</span>
+    <div class="t1">Advantages of MongoDB</div>
+    <div class="t2">Schema-less flexibility · No JOIN operations needed · High performance and availability · Horizontal scalability · Supports ACID transactions (from v4.0) · Geospatial support · BSON document format · No SQL injection risk · Easily integrates with Big Data Hadoop · Heterogeneous data storage</div>
+    <div class="hr"></div>
+    <div class="t1">Disadvantages of MongoDB</div>
+    <div class="t2">High memory usage for data storage · Document size limited to 16MB · BSON nesting limited to 100 levels · No JOIN support (must denormalize data) · Less mature than traditional RDBMS for complex transactions</div>
+  </div>
+</div>
+
+<div id="operators" class="sec">
+  <div class="card">
+    <span class="badge hot">Very likely — write all 8 operators</span>
+    <div class="t1">Comparison Query Operators</div>
+    <div style="margin-top:8px">
+      <div class="op-row"><div class="op-sym">$eq</div><div class="op-desc">Equal to — matches exact value</div><div class="op-ex">db.Faculty.find({Age:{$eq:32}})</div></div>
+      <div class="op-row"><div class="op-sym">$ne</div><div class="op-desc">Not equal to — excludes exact value</div><div class="op-ex">db.Faculty.find({Age:{$ne:32}})</div></div>
+      <div class="op-row"><div class="op-sym">$gt</div><div class="op-desc">Greater than</div><div class="op-ex">db.Faculty.find({Age:{$gt:30}})</div></div>
+      <div class="op-row"><div class="op-sym">$gte</div><div class="op-desc">Greater than or equal to</div><div class="op-ex">db.Faculty.find({Age:{$gte:30}})</div></div>
+      <div class="op-row"><div class="op-sym">$lt</div><div class="op-desc">Less than</div><div class="op-ex">db.Faculty.find({Age:{$lt:40}})</div></div>
+      <div class="op-row"><div class="op-sym">$lte</div><div class="op-desc">Less than or equal to</div><div class="op-ex">db.Faculty.find({Age:{$lte:40}})</div></div>
+      <div class="op-row"><div class="op-sym">$in</div><div class="op-desc">Matches any value in the given array</div><div class="op-ex">db.Faculty.find({Age:{$in:[30,32,35]}})</div></div>
+      <div class="op-row"><div class="op-sym">$nin</div><div class="op-desc">Matches none of the values in array</div><div class="op-ex">db.Faculty.find({Age:{$nin:[30,32]}})</div></div>
+    </div>
+    <div class="cb" style="margin-top:8px">-- Sort results: 1 = Ascending, -1 = Descending
+db.Faculty.find({Age:{$nin:[32,30]}}).sort({Age: 1})   -- ASC
+db.Faculty.find({Age:{$nin:[32,30]}}).sort({Age: -1})  -- DESC</div>
+  </div>
+  <div class="card">
+    <span class="badge hot">Logical operators — all 4 with syntax</span>
+    <div class="t1">Logical Query Operators</div>
+    <div style="margin-top:10px">
+      <div class="step"><div class="step-num" style="background:#E6F1FB;color:#0C447C">$and</div><div class="step-body"><div class="step-title">AND — both conditions must be true</div>
+<div class="cb">db.Faculty.find({
+  $and: [{Age:{$gt:30}}, {CITY:"NOIDA"}]
+})</div></div></div>
+      <div class="step"><div class="step-num" style="background:#E1F5EE;color:#085041">$or</div><div class="step-body"><div class="step-title">OR — at least one condition must be true</div>
+<div class="cb">db.Faculty.find({
+  $or: [{Age:{$lt:35}}, {CITY:"DELHI"}]
+})</div></div></div>
+      <div class="step"><div class="step-num" style="background:#FAEEDA;color:#854F0B">$not</div><div class="step-body"><div class="step-title">NOT — reverses the condition (returns what does NOT match)</div>
+<div class="cb">db.Faculty.find({
+  Age: {$not: {$eq: 32}}
+})</div></div></div>
+      <div class="step"><div class="step-num" style="background:#FCEBEB;color:#A32D2D">$nor</div><div class="step-body"><div class="step-title">NOR — returns documents that fail ALL conditions</div>
+<div class="cb">db.Faculty.find({
+  $nor: [{CITY:"DELHI"}, {Age:{$gt:40}}]
+})</div></div></div>
+    </div>
+  </div>
+</div>
+
+<div id="aggregation" class="sec">
+  <div class="card">
+    <span class="badge hot">Very likely in exam</span>
+    <div class="t1">What is Aggregation in MongoDB?</div>
+    <div class="t2">Aggregation is a way to process multiple documents and return computed results. It works like GROUP BY in SQL — you can calculate total, average, minimum, maximum, and count values. Aggregation works through a pipeline where documents pass through multiple stages, and each stage transforms the data.</div>
+    <div class="cb" style="margin-top:8px">-- Syntax
+db.collectionName.aggregate(pipeline, options)
+
+-- Example: total age by department, only for NOIDA city
+db.Faculty.aggregate([
+  {$match: {CITY: "NOIDA"}},
+  {$group: {_id: "$Deptt", totalAge: {$sum: "$Age"}}}
+])</div>
+  </div>
+  <div class="card">
+    <span class="badge hot">All 5 pipeline stages — write with examples</span>
+    <div class="t1">Aggregation Pipeline Stages</div>
+    <div style="margin-top:10px">
+      <div class="step"><div class="step-num">1</div><div class="step-body"><div class="step-title">$match — filter documents (like WHERE in SQL)</div>
+<div class="cb">db.Faculty.aggregate([
+  {$match: {CITY: "NOIDA"}}
+])</div></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-body"><div class="step-title">$group — group documents and compute values (like GROUP BY)</div>
+<div class="cb">-- Count documents per city
+db.Faculty.aggregate([
+  {$group: {_id: "$CITY", count: {$sum: 1}}}
+])
+
+-- Total age by city
+db.Faculty.aggregate([
+  {$group: {_id: "$CITY", totalAge: {$sum: "$Age"}}}
+])
+
+-- Min and Max age by city
+db.Faculty.aggregate([
+  {$group: {_id: "$CITY", minAge: {$min: "$Age"}, maxAge: {$max: "$Age"}}}
+])</div></div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-body"><div class="step-title">$sort — sort results (1 = asc, -1 = desc)</div>
+<div class="cb">db.Faculty.aggregate([{$sort: {Age: 1}}])   -- ascending
+db.Faculty.aggregate([{$sort: {Age: -1}}])  -- descending</div></div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-body"><div class="step-title">$project — choose which fields to include/exclude</div>
+<div class="cb">db.Faculty.aggregate([
+  {$project: {CITY: 1, Deptt: 1, Age: 1}}  -- show only these 3 fields
+])</div></div></div>
+      <div class="step"><div class="step-num">5</div><div class="step-body"><div class="step-title">$skip — skip first N documents</div>
+<div class="cb">db.Faculty.aggregate([{$skip: 5}])  -- skip first 5 documents</div></div></div>
+    </div>
+  </div>
+  <div class="card">
+    <span class="badge tip">$group operators — all you need</span>
+    <div class="t1">$group aggregation operators</div>
+    <div style="margin-top:6px">
+      <div class="op-row"><div class="op-sym">$sum</div><div class="op-desc">Calculates the total / count (use 1 to count documents)</div><div class="op-ex">{$sum: "$Age"} or {$sum: 1}</div></div>
+      <div class="op-row"><div class="op-sym">$avg</div><div class="op-desc">Calculates the average value of a field</div><div class="op-ex">{$avg: "$Age"}</div></div>
+      <div class="op-row"><div class="op-sym">$min</div><div class="op-desc">Returns the minimum value of a field</div><div class="op-ex">{$min: "$Age"}</div></div>
+      <div class="op-row"><div class="op-sym">$max</div><div class="op-desc">Returns the maximum value of a field</div><div class="op-ex">{$max: "$Age"}</div></div>
+      <div class="op-row"><div class="op-sym">$first</div><div class="op-desc">Returns value from the first document in the group</div><div class="op-ex">{$first: "$Name"}</div></div>
+      <div class="op-row"><div class="op-sym">$last</div><div class="op-desc">Returns value from the last document in the group</div><div class="op-ex">{$last: "$Name"}</div></div>
+    </div>
+  </div>
+</div>
+
+<div id="compass" class="sec">
+  <div class="card">
+    <span class="badge med">Good to know</span>
+    <div class="t1">What is MongoDB Compass?</div>
+    <div class="t2">MongoDB Compass is a free, open-source graphical user interface (GUI) tool for MongoDB. Instead of typing shell commands, you can visually browse your data, run queries, build aggregation pipelines, and analyze performance. It runs on macOS, Windows, and Linux.</div>
+    <div class="grid2" style="margin-top:10px">
+      <div class="mini"><div class="mini-title">Visual querying</div><div class="mini-sub">Point-and-click filtering without writing shell commands</div></div>
+      <div class="mini"><div class="mini-title">Aggregation builder</div><div class="mini-sub">Build pipelines visually with a drag-and-drop interface</div></div>
+      <div class="mini"><div class="mini-title">Schema analysis</div><div class="mini-sub">Automatically detect and display document structure</div></div>
+      <div class="mini"><div class="mini-title">Performance profiler</div><div class="mini-sub">See which queries are slow and how indexes help</div></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="t1">How to install MongoDB Compass</div>
+    <div style="margin-top:8px">
+      <div class="step"><div class="step-num">1</div><div class="step-body">Go to the MongoDB downloads page and download Compass for your OS (available as .exe, .msi, or .zip)</div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-body">Double-click the installer file and follow the prompts</div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-body">Choose the installation directory</div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-body">After installation, Compass launches and asks you to configure privacy settings</div></div>
+      <div class="step"><div class="step-num">5</div><div class="step-body">Connect using: <code style="font-size:12px">mongodb://localhost:27017</code> for local MongoDB</div></div>
+    </div>
+  </div>
+</div>
+
+<div id="questions" class="sec">
+  <div style="font-size:13px;color:var(--color-text-secondary);margin-bottom:1rem">All questions from the PPT's "Expected Questions" slide + high-probability extras. Click each card to reveal a full answer guide.</div>
+
+  <div class="card">
+    <div class="q-num">Q1 — HIGH PRIORITY (8-10 marks)</div>
+    <div class="q-text">What is SQLite? Explain its features in detail.</div>
+    <button class="qtoggle" onclick="tog(this)">show full answer guide ▾</button>
+    <div class="qbox">Define: SQLite is a C-library, serverless, embedded SQL database engine stored in a single file.<br><br>Write all 9 features: (1) Serverless (2) Zero-configuration (3) Single cross-platform file (4) Lightweight — less than 400KB (5) Self-contained — no external dependencies (6) ACID-compliant (7) SQL92 support (8) Written in ANSI-C (9) Cross-platform (Linux/Mac/Win/Android/iOS). Give 1-2 lines per feature for full marks.</div>
+  </div>
+
+  <div class="card">
+    <div class="q-num">Q2 — HIGH PRIORITY (10 marks)</div>
+    <div class="q-text">Explain how to connect to a SQLite database using Python. Write the complete code.</div>
+    <button class="qtoggle" onclick="tog(this)">show full answer guide ▾</button>
+    <div class="qbox">Steps: (1) import sqlite3 (2) connect() — creates file if not exists (3) cursor() — creates cursor object (4) execute() — runs SQL query (5) fetchall() — retrieves all results (6) commit() — saves changes (7) close() — frees resources.<br><br>Write the full code with CREATE TABLE, INSERT, SELECT, and close(). Explain each line briefly.</div>
+  </div>
+
+  <div class="card">
+    <div class="q-num">Q3 — HIGH PRIORITY (10 marks)</div>
+    <div class="q-text">Explain DDL commands with syntax and examples.</div>
+    <button class="qtoggle" onclick="tog(this)">show full answer guide ▾</button>
+    <div class="qbox">Define DDL: commands that define database structure/schema. Auto-commit — cannot be rolled back.<br><br>List all 6: CREATE (create table/index/view), DROP (delete object), ALTER (modify structure), TRUNCATE (remove all rows), RENAME (rename table), COMMENT (add description).<br><br>Write SQL code example for each. For ALTER, write Python code using cursor.execute("ALTER TABLE..."). For full marks write at least 3 commands with code.</div>
+  </div>
+
+  <div class="card">
+    <div class="q-num">Q4 — HIGH PRIORITY (10 marks)</div>
+    <div class="q-text">Explain DML commands with syntax and examples.</div>
+    <button class="qtoggle" onclick="tog(this)">show full answer guide ▾</button>
+    <div class="qbox">Define DML: commands that manipulate/manage actual data inside tables. Can be rolled back.<br><br>List all 4: INSERT (add rows), UPDATE (modify rows), DELETE (remove rows), SELECT (read rows).<br><br>Write SQL code example for each. Then write Python code using cursor.execute() and cursor.executemany(). Mention: autocommit=True required, execute() for single, executemany() for multiple rows.</div>
+  </div>
+
+  <div class="card">
+    <div class="q-num">Q5 — HIGH PRIORITY (8 marks)</div>
+    <div class="q-text">What is the cursor object? How does it help in SQLite database connection?</div>
+    <button class="qtoggle" onclick="tog(this)">show full answer guide ▾</button>
+    <div class="qbox">Definition: A cursor is an object that provides the interface between Python code and the SQLite database. It is created by calling conn.cursor() on the connection object.<br><br>Role: The cursor executes SQL statements, sends them to the database, and retrieves results.<br><br>Methods: execute() — single query, executemany() — multiple rows, fetchall() — all results, fetchone() — first result.<br><br>Write a code example showing all steps.</div>
+  </div>
+
+  <div class="card">
+    <div class="q-num">Q6 — HIGH PRIORITY (10 marks)</div>
+    <div class="q-text">What are NoSQL databases? What are the different types?</div>
+    <button class="qtoggle" onclick="tog(this)">show full answer guide ▾</button>
+    <div class="qbox">Definition: NoSQL = Not Only SQL. Non-relational databases designed for large-scale, distributed, unstructured data. Does not use tables/rows/columns.<br><br>4 Types with examples:<br>1. Document store — MongoDB, CouchDB (stores JSON/BSON docs)<br>2. Key-value store — Redis, DynamoDB (simple key:value pairs)<br>3. Column-family — Cassandra, HBase (data in column groups)<br>4. Graph database — Neo4j (nodes and edges for relationships)<br><br>Write the SQL vs NoSQL comparison table for extra marks.</div>
+  </div>
+
+  <div class="card">
+    <div class="q-num">Q7 — HIGH PRIORITY (10 marks)</div>
+    <div class="q-text">Explain the features of MongoDB in detail.</div>
+    <button class="qtoggle" onclick="tog(this)">show full answer guide ▾</button>
+    <div class="qbox">Write 6 features with 3-4 lines each:<br>1. Schema-less — different documents, different fields<br>2. Document-oriented — BSON format, unique _id<br>3. Indexing — primary + secondary indexes, fast search<br>4. Scalability — horizontal scaling via sharding (distributes data across servers using shard key)<br>5. Replication — replica sets, copies on multiple servers, high availability<br>6. Aggregation — pipeline, map-reduce, single-purpose methods<br><br>Also mention: max doc size 16MB, max nesting 100 levels, ACID from v4.0.</div>
+  </div>
+
+  <div class="card">
+    <div class="q-num">Q8 — HIGH PRIORITY (10 marks)</div>
+    <div class="q-text">Compare the features of MongoDB with RDBMS.</div>
+    <button class="qtoggle" onclick="tog(this)">show full answer guide ▾</button>
+    <div class="qbox">Draw a comparison table with rows: Data model, Schema, Query language, Scaling, JOIN support, ACID, Data format, Examples, Best use case.<br><br>RDBMS: Tables/rows/columns, fixed schema, SQL, vertical scaling, JOIN supported, fully ACID, row-based.<br>MongoDB: Collections/documents/fields, schema-less, MQL, horizontal (sharding), no JOIN, ACID from v4.0, BSON format.</div>
+  </div>
+
+  <div class="card">
+    <div class="q-num">Q9 — HIGH PRIORITY (10 marks)</div>
+    <div class="q-text">Explain MongoDB Shell commands with syntax and examples.</div>
+    <button class="qtoggle" onclick="tog(this)">show full answer guide ▾</button>
+    <div class="qbox">Write at least 8 commands with syntax + example:<br>show dbs, use dbname, db.createCollection(), show collections, insertOne(), insertMany(), find(), find().pretty(), update() with $set, deleteOne(), deleteMany().<br><br>For each: write the command, its purpose, and a concrete example using a student/faculty collection.</div>
+  </div>
+
+  <div class="card">
+    <div class="q-num">Q10 — HIGH PRIORITY (8 marks)</div>
+    <div class="q-text">Explain Comparison Query Operators in MongoDB with examples.</div>
+    <button class="qtoggle" onclick="tog(this)">show full answer guide ▾</button>
+    <div class="qbox">Write all 8 operators: $eq, $ne, $gt, $gte, $lt, $lte, $in, $nin.<br><br>For each: write one line meaning + a db.Faculty.find() example. Also mention .sort({field: 1}) for ascending and .sort({field: -1}) for descending. This is directly from the PPT examples.</div>
+  </div>
+
+  <div class="card">
+    <div class="q-num">Q11 — HIGH PRIORITY (8 marks)</div>
+    <div class="q-text">Explain Logical Query Operators in MongoDB with examples.</div>
+    <button class="qtoggle" onclick="tog(this)">show full answer guide ▾</button>
+    <div class="qbox">Write all 4 logical operators: $and, $or, $not, $nor.<br><br>For each: write the meaning, the syntax with { $and: [ {expr1}, {expr2} ] }, and a concrete example from the PPT (using Faculty collection with Age and CITY fields). Full code examples score full marks.</div>
+  </div>
+
+  <div class="card">
+    <div class="q-num">Q12 — HIGH PRIORITY (10 marks)</div>
+    <div class="q-text">What are aggregate functions in MongoDB? Explain the aggregation pipeline.</div>
+    <button class="qtoggle" onclick="tog(this)">show full answer guide ▾</button>
+    <div class="qbox">Definition: Aggregation processes multiple documents and returns computed results (sum, avg, min, max, count). Like GROUP BY in SQL.<br><br>Pipeline stages: $match (filter), $group (aggregate with $sum/$avg/$min/$max), $sort (order), $project (select fields), $skip (skip N docs).<br><br>Write the syntax: db.collection.aggregate([pipeline]). Give a full 2-stage example: $match + $group together. Write the $group operators table: $sum, $avg, $min, $max, $first, $last.</div>
+  </div>
+
+  <div class="card">
+    <div class="q-num">Q13 — MEDIUM PRIORITY (5 marks)</div>
+    <div class="q-text">Does MongoDB support ACID transactions? Define ACID.</div>
+    <button class="qtoggle" onclick="tog(this)">show full answer guide ▾</button>
+    <div class="qbox">Yes — MongoDB supports multi-document ACID transactions starting from version 4.0.<br><br>ACID definition:<br>A — Atomicity: a transaction is all-or-nothing. Either all operations succeed or none are applied.<br>C — Consistency: the database remains in a valid state before and after the transaction.<br>I — Isolation: concurrent transactions do not interfere with each other.<br>D — Durability: once committed, changes are permanent even if the system crashes.</div>
+  </div>
+
+  <div class="card">
+    <div class="q-num">Q14 — MEDIUM PRIORITY (5 marks)</div>
+    <div class="q-text">Explain how to add or delete columns from an existing SQLite table.</div>
+    <button class="qtoggle" onclick="tog(this)">show full answer guide ▾</button>
+    <div class="qbox">Use ALTER TABLE command to add a column:<br>ALTER TABLE student ADD COLUMN phone TEXT;<br><br>SQLite does not support DROP COLUMN directly (older versions). Workaround: create new table without the column, copy data, drop old table, rename new table.<br><br>In Python: cursor.execute("ALTER TABLE student ADD COLUMN phone TEXT") then conn.commit().</div>
+  </div>
+</div>
+
+<script>
+function show(id){
+  document.querySelectorAll('.sec').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  event.target.classList.add('active');
+}
+function tog(btn){
+  const box=btn.nextElementSibling;
+  if(box.style.display==='block'){
+    box.style.display='none';
+    btn.textContent='show full answer guide ▾';
+  } else {
+    box.style.display='block';
+    btn.textContent='hide answer guide ▲';
+  }
+}
+</script>
